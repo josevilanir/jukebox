@@ -1,0 +1,11 @@
+<div class="max-w-5xl mx-auto p-6 space-y-6">
+  <header class="flex items-center justify-between">
+    <h1 class="text-3xl font-bold"><%= @room.name %></h1>
+    <div class="text-sm text-gray-500">Você é: <strong><%= current_user.name %></strong></div>
+  </header>
+
+  <div class="p-6 rounded bg-gray-50">
+    <p>Pronto! A sala existe. Próximo passo: adicionar músicas e fila com votos 🎶</p>
+    <p class="text-sm text-gray-500 mt-2">Rota: <code>/rooms/<%= @room.slug %></code></p>
+  </div>
+</div>

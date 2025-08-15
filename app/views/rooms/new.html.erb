@@ -1,0 +1,11 @@
+<div class="max-w-xl mx-auto p-6">
+  <h1 class="text-2xl font-bold mb-4">Criar sala</h1>
+
+  <%= form_with model: @room do |f| %>
+    <div class="mb-4">
+      <%= f.label :name, "Nome da sala", class: "block mb-1" %>
+      <%= f.text_field :name, class: "w-full border p-2 rounded" %>
+    </div>
+    <%= f.submit "Criar", class: "px-4 py-2 bg-indigo-600 text-white rounded" %>
+  <% end %>
+</div>

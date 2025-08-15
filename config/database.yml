@@ -1,0 +1,35 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  host: 127.0.0.1
+  port: 5432
+  username: <%= ENV.fetch("PGUSER", "rails") %>
+  password: <%= ENV.fetch("PGPASSWORD", "rails123") %>
+
+development:
+  <<: *default
+  database: jukebox_development
+
+test:
+  <<: *default
+  database: jukebox_test
+
+production:
+  primary: &primary_production
+    <<: *default
+    database: jukebox_production
+    username: jukebox
+    password: <%= ENV["JUKEBOX_DATABASE_PASSWORD"] %>
+  cache:
+    <<: *primary_production
+    database: jukebox_production_cache
+    migrations_paths: db/cache_migrate
+  queue:
+    <<: *primary_production
+    database: jukebox_production_queue
+    migrations_paths: db/queue_migrate
+  cable:
+    <<: *primary_production
+    database: jukebox_production_cable
+    migrations_paths: db/cable_migrate
