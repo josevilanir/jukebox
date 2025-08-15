@@ -1,0 +1,9 @@
+<div class="bg-gray-50 p-4 rounded">
+  <h3 class="font-semibold mb-2">Adicionar música (YouTube URL)</h3>
+  <%= form_with url: room_queue_items_path(room.slug), method: :post, data: { turbo: true } do %>
+    <div class="flex gap-2">
+      <input type="url" name="url" placeholder="https://www.youtube.com/watch?v=..." class="flex-1 border p-2 rounded" required>
+      <button type="submit" class="px-4 py-2 bg-emerald-600 text-white rounded">Adicionar</button>
+    </div>
+  <% end %>
+</div>

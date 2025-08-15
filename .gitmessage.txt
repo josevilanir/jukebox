@@ -1,0 +1,15 @@
+<type>(<scope>): <short summary, no dot>
+
+# Descrição
+# - O que mudou e por quê
+# - Contexto e impacto
+
+# Tarefas/Refs
+# - issue: #
+# - card: #
+
+# BREAKING CHANGES
+# - descreva aqui se houver
+
+# Tipos comuns:
+# feat, fix, docs, style, refactor, perf, test, build, chore, ci

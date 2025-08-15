@@ -1,0 +1,37 @@
+<% qi = queue_item %>
+<% user = (defined?(current_user) && current_user.present?) ? current_user : nil %>
+<% user_voted = user && user.votes.where(queue_item: qi).exists? %>
+
+<div id="<%= dom_id(qi) %>" class="border rounded p-3 flex items-center gap-3 bg-white">
+  <img src="<%= qi.track.thumbnail_url %>" alt="" class="w-20 h-12 object-cover rounded">
+
+  <div class="flex-1">
+    <div class="font-semibold"><%= qi.track.title %></div>
+    <div class="text-sm text-gray-500"><%= qi.track.source.upcase %> • adicionado por <%= qi.added_by.name %></div>
+  </div>
+
+  <div class="flex items-center gap-2">
+    <span class="px-2 py-1 rounded bg-gray-100">Score: <%= qi.score %></span>
+
+    <% if user_voted %>
+      <%= button_to "Remover voto",
+        room_queue_item_vote_path(qi.room.slug, qi, user.votes.find_by(queue_item: qi)),
+        method: :delete,
+        form: { data: { turbo_confirm: "Remover seu voto?" } },
+        class: "px-3 py-1 border rounded" %>
+    <% else %>
+      <%= button_to "Votar +1",
+        room_queue_item_votes_path(qi.room.slug, qi),
+        method: :post,
+        class: "px-3 py-1 bg-indigo-600 text-white rounded" %>
+    <% end %>
+
+    <% if user && qi.added_by_id == user.id %>
+      <%= button_to "Remover",
+        room_queue_item_path(qi.room.slug, qi),
+        method: :delete,
+        form: { data: { turbo_confirm: "Remover da fila?" } },
+        class: "px-3 py-1 border rounded" %>
+    <% end %>
+  </div>
+</div>

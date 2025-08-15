@@ -1,0 +1,8 @@
+<div>
+  <h2 class="text-xl font-semibold mb-3">Fila</h2>
+  <div id="queue_items" class="space-y-2">
+    <% room.ordered_queue.each do |qi| %>
+      <%= render "queue_items/queue_item", queue_item: qi %>
+    <% end %>
+  </div>
+</div>

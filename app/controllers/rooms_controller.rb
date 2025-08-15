@@ -19,6 +19,8 @@ class RoomsController < ApplicationController
   end
 
   def show
+    @queue_items = @room.ordered_queue
+    @current_item = @queue_items.first
   end
 
   private
