@@ -1,7 +1,6 @@
 class Room < ApplicationRecord
   has_many :queue_items, dependent: :destroy
-  # Chat virá depois — quando message for criado, será habilitado:
-  # has_many :messages, dependent: :destroy
+  has_many :messages, dependent: :destroy
 
   validates :name, presence: true
   validates :slug, presence: true, uniqueness: true

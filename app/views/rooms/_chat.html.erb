@@ -1,0 +1,16 @@
+<div class="bg-white border rounded p-3 space-y-3">
+  <h2 class="text-xl font-semibold">Chat</h2>
+
+  <!-- lista -->
+  <div id="messages" class="space-y-2 max-h-64 overflow-auto pr-2">
+    <% room.messages.order(created_at: :asc).each do |m| %>
+      <%= render "messages/message", message: m %>
+    <% end %>
+  </div>
+
+  <!-- form -->
+  <%= form_with url: room_messages_path(room.slug), data: { turbo: true }, class: "flex gap-2" do %>
+    <input type="text" name="content" placeholder="Escreva uma mensagem..." class="flex-1 border p-2 rounded" required>
+    <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded">Enviar</button>
+  <% end %>
+</div>

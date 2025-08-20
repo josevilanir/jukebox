@@ -3,6 +3,7 @@ Rails.application.routes.draw do
     resources :queue_items, only: %i[create destroy] do
       resources :votes, only: %i[create destroy]
     end
+    resources :messages, only: %i[create]
   end
 
   root "rooms#index"

@@ -1,0 +1,6 @@
+<% m = message %>
+<div id="<%= dom_id(m) %>" class="flex items-start gap-2">
+  <div class="text-sm font-semibold"><%= m.user.name %></div>
+  <div class="text-sm"><%= simple_format(h(m.content)) %></div>
+  <div class="text-xs text-gray-400 ml-auto"><%= l m.created_at, format: :short %></div>
+</div>
