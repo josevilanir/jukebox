@@ -1,12 +1,18 @@
 <% qi = queue_item %>
 <% user = (defined?(current_user) && current_user.present?) ? current_user : nil %>
 <% user_voted = user && user.votes.where(queue_item: qi).exists? %>
+<% is_now_playing = (qi == qi.room.now_playing) %>
 
 <div id="<%= dom_id(qi) %>" class="border rounded p-3 flex items-center gap-3 bg-white">
   <img src="<%= qi.track.thumbnail_url %>" alt="" class="w-20 h-12 object-cover rounded">
 
   <div class="flex-1">
-    <div class="font-semibold"><%= qi.track.title %></div>
+    <div class="font-semibold flex items-center gap-2">
+      <%= qi.track.title %>
+      <% if is_now_playing %>
+        <span class="text-xs px-2 py-0.5 rounded bg-emerald-600 text-white">Tocando agora</span>
+      <% end %>
+    </div>
     <div class="text-sm text-gray-500"><%= qi.track.source.upcase %> • adicionado por <%= qi.added_by.name %></div>
   </div>
 
