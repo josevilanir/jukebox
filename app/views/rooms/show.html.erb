@@ -6,22 +6,13 @@
     <div class="text-sm text-gray-500">Você é: <strong><%= current_user.name %></strong></div>
   </header>
 
-  <!-- Player -->
-  <div id="player" class="aspect-video bg-black/10 rounded overflow-hidden">
-    <% if @current_item&.track&.youtube_id %>
-      <iframe class="w-full h-full"
-              src="https://www.youtube.com/embed/<%= @current_item.track.youtube_id %>?autoplay=0"
-              title="YouTube player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowfullscreen></iframe>
-    <% else %>
-      <div class="p-6 text-gray-600">Nenhuma música na fila ainda.</div>
-    <% end %>
-  </div>
+  <%= render "rooms/player", room: @room %>
 
   <div class="grid md:grid-cols-3 gap-6">
     <div class="md:col-span-2 space-y-4">
       <%= render "queue_items/form", room: @room %>
       <div id="queue"><%= render "rooms/queue", room: @room %></div>
+      <%= render "rooms/history", room: @room %>
     </div>
     <div>
       <%= render "rooms/chat", room: @room %>

@@ -1,0 +1,16 @@
+<div class="mt-6">
+  <h2 class="text-xl font-semibold mb-3">Tocadas recentemente</h2>
+  <div class="space-y-2">
+    <% room.history(limit: 10).each do |qi| %>
+      <div class="border rounded p-3 flex items-center gap-3 bg-white">
+        <img src="<%= qi.track.thumbnail_url %>" alt="" class="w-16 h-10 object-cover rounded">
+        <div class="flex-1">
+          <div class="font-medium"><%= qi.track.title %></div>
+          <div class="text-xs text-gray-500">
+            Tocada em <%= l qi.played_at, format: :short %> • por <%= qi.added_by.name %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

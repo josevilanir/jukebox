@@ -4,8 +4,7 @@ class QueueItem < ApplicationRecord
   belongs_to :added_by, class_name: "User"
   has_many :votes, dependent: :destroy
 
-  # Atualiza a fila da sala via Turbo após mudanças
-  after_commit :broadcast_queue_update
+  after_commit :broadcast_updates
 
   def score
     votes.sum(:value)
@@ -13,11 +12,19 @@ class QueueItem < ApplicationRecord
 
   private
 
-  def broadcast_queue_update
+  def broadcast_updates
+    # Atualiza a fila
     broadcast_replace_to(
       room,
       target: "queue",
       partial: "rooms/queue",
+      locals: { room: room }
+    )
+    # Atualiza o player
+    broadcast_replace_to(
+      room,
+      target: "player",
+      partial: "rooms/player",
       locals: { room: room }
     )
   end

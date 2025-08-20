@@ -1,0 +1,22 @@
+<div class="space-y-2">
+  <div id="player" class="aspect-video bg-black/10 rounded overflow-hidden flex items-center justify-center">
+    <% current = room.now_playing %>
+    <% if current&.track&.youtube_id %>
+      <iframe class="w-full h-full"
+              src="https://www.youtube.com/embed/<%= current.track.youtube_id %>?autoplay=0"
+              title="YouTube player"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen></iframe>
+    <% else %>
+      <div class="p-6 text-gray-600">Nenhuma música tocando.</div>
+    <% end %>
+  </div>
+
+  <div class="flex items-center gap-2">
+    <% if room.queue_open.any? %>
+      <%= button_to "Tocar próxima", play_next_room_path(room.slug),
+            method: :post,
+            class: "px-4 py-2 bg-emerald-600 text-white rounded" %>
+    <% end %>
+  </div>
+</div>

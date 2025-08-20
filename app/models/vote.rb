@@ -10,6 +10,7 @@ class Vote < ApplicationRecord
   private
 
   def notify_room
-    queue_item.send(:broadcast_queue_update)
+    # Atualiza fila e player após votar / remover voto
+    queue_item.send(:broadcast_updates)
   end
 end
