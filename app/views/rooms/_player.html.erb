@@ -1,22 +1,27 @@
 <div class="space-y-2">
   <div id="player" class="aspect-video bg-black/10 rounded overflow-hidden flex items-center justify-center">
     <% current = room.now_playing %>
+
     <% if current&.track&.youtube_id %>
-      <iframe class="w-full h-full"
-              src="https://www.youtube.com/embed/<%= current.track.youtube_id %>?autoplay=0"
-              title="YouTube player"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowfullscreen></iframe>
+      <div data-controller="yt-player"
+           data-yt-player-video-id-value="<%= current.track.youtube_id %>"
+           data-yt-player-room-slug-value="<%= room.slug %>"
+           data-yt-player-autoplay-value="<%= room.host?(current_user) %>"
+           class="w-full h-full">
+        <div data-yt-player-target="frame" class="w-full h-full"></div>
+      </div>
     <% else %>
       <div class="p-6 text-gray-600">Nenhuma música tocando.</div>
     <% end %>
   </div>
 
   <div class="flex items-center gap-2">
-    <% if room.queue_open.any? %>
+    <% if room.queue_open.any? && room.host?(current_user) %>
       <%= button_to "Tocar próxima", play_next_room_path(room.slug),
             method: :post,
             class: "px-4 py-2 bg-emerald-600 text-white rounded" %>
+    <% elsif room.queue_open.any? %>
+      <span class="text-xs text-gray-500">Apenas o host pode tocar a próxima.</span>
     <% end %>
   </div>
 </div>

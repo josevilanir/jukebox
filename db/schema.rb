@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_20_114333) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_29_170940) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -44,6 +44,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_20_114333) do
     t.string "status", default: "active", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "owner_id"
+    t.index ["owner_id"], name: "index_rooms_on_owner_id"
     t.index ["slug"], name: "index_rooms_on_slug", unique: true
   end
 
@@ -81,6 +83,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_20_114333) do
   add_foreign_key "queue_items", "rooms"
   add_foreign_key "queue_items", "tracks"
   add_foreign_key "queue_items", "users", column: "added_by_id"
+  add_foreign_key "rooms", "users", column: "owner_id"
   add_foreign_key "votes", "queue_items"
   add_foreign_key "votes", "users"
 end

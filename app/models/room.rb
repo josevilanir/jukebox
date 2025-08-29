@@ -1,4 +1,6 @@
 class Room < ApplicationRecord
+  belongs_to :owner, class_name: "User", optional: true
+
   has_many :queue_items, dependent: :destroy
   has_many :messages, dependent: :destroy
 
@@ -7,7 +9,7 @@ class Room < ApplicationRecord
 
   before_validation :ensure_slug
 
-  # Itens ainda não tocados, ordenados por score DESC e primeiro a entrar
+  # ---- Fila / Player ----
   def queue_open
     queue_items.where(played_at: nil)
                .left_joins(:votes)
@@ -24,6 +26,11 @@ class Room < ApplicationRecord
     queue_items.where.not(played_at: nil)
                .order(played_at: :desc)
                .limit(limit)
+  end
+
+  # ---- Permissões ----
+  def host?(user)
+    user.present? && owner_id.present? && owner_id == user.id
   end
 
   private

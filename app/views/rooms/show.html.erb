@@ -3,7 +3,12 @@
 <div class="max-w-6xl mx-auto p-6 space-y-6">
   <header class="flex items-center justify-between">
     <h1 class="text-3xl font-bold"><%= @room.name %></h1>
-    <div class="text-sm text-gray-500">Você é: <strong><%= current_user.name %></strong></div>
+    <div class="text-sm text-gray-500">
+      Você é: <strong><%= current_user.name %></strong>
+      <% if @room.host?(current_user) %>
+        <span class="ml-2 px-2 py-0.5 rounded bg-amber-500    text-white text-xs">Host</span>
+      <% end %>
+    </div>
   </header>
 
   <%= render "rooms/player", room: @room %>

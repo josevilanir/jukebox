@@ -11,6 +11,7 @@ class RoomsController < ApplicationController
 
   def create
     @room = Room.new(room_params)
+    @room.owner = current_user    # <- define dono
     if @room.save
       redirect_to room_path(@room.slug), notice: "Sala criada!"
     else
@@ -23,8 +24,12 @@ class RoomsController < ApplicationController
     @current_item = @room.now_playing
   end
 
-  # Marca o item atual como tocado; o próximo vira "now playing"
+  # Só o host pode avançar
   def play_next
+    unless @room.host?(current_user)
+      redirect_to room_path(@room.slug), alert: "Apenas o host pode tocar a próxima." and return
+    end
+
     current = @room.now_playing
     if current
       current.update!(played_at: Time.current)
