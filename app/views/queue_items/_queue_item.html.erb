@@ -1,45 +1,53 @@
+<%# queue_items/_queue_item.html.erb — dark styled track row %>
 <% qi = queue_item %>
 <% user = (defined?(current_user) && current_user.present?) ? current_user : nil %>
-<% user_voted = user && user.votes.where(queue_item: qi).exists? %>
-<% is_now_playing = (qi == qi.room.now_playing) %>
+<% user_voted  = user && user.votes.where(queue_item: qi).exists? %>
+<% is_playing  = (qi == qi.room.now_playing) %>
 
-<div id="<%= dom_id(qi) %>" class="border rounded p-3 flex items-center gap-3 bg-white">
-  <img src="<%= qi.track.thumbnail_url %>" alt="" class="w-20 h-12 object-cover rounded">
+<div id="<%= dom_id(qi) %>"
+     class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors duration-150
+            <%= is_playing ? 'bg-purple-500/10 border border-purple-500/30' : 'hover:bg-white/5' %>">
 
-  <div class="flex-1">
-    <div class="font-semibold flex items-center gap-2">
+  <img src="<%= qi.track.thumbnail_url %>" alt="" class="thumb">
+
+  <div class="flex-1 min-w-0">
+    <div class="font-semibold text-sm truncate flex items-center gap-2">
       <%= qi.track.title %>
-      <% if is_now_playing %>
-        <span class="text-xs px-2 py-0.5 rounded bg-emerald-600 text-white">Tocando agora</span>
+      <% if is_playing %>
+        <span class="badge badge-live text-[0.6rem]">
+          <span class="live-dot mr-1"></span>Tocando
+        </span>
       <% end %>
     </div>
-    <div class="text-sm text-gray-500">
-      <%= qi.track.source.upcase %> • adicionado por <%= qi.added_by.name %>
+    <div class="text-xs mt-0.5 truncate" style="color: var(--text-muted);">
+      por <%= qi.added_by.name %>
     </div>
   </div>
 
-  <div class="flex items-center gap-2">
-    <span class="px-2 py-1 rounded bg-gray-100">Score: <%= qi.score %></span>
+  <div class="flex items-center gap-2 shrink-0">
+    <span class="badge badge-score">▲ <%= qi.score %></span>
 
     <% if user_voted %>
-      <%= button_to "Remover voto",
-        room_queue_item_vote_path(qi.room.slug, qi, user.votes.find_by(queue_item: qi)),
-        method: :delete,
-        form: { data: { turbo_confirm: "Remover seu voto?" } },
-        class: "px-3 py-1 border rounded" %>
+      <%= button_to "✓",
+          room_queue_item_vote_path(qi.room.slug, qi, user.votes.find_by(queue_item: qi)),
+          method: :delete,
+          class: "btn btn-ghost btn-sm",
+          title: "Remover voto" %>
     <% else %>
-      <%= button_to "Votar +1",
-        room_queue_item_votes_path(qi.room.slug, qi),
-        method: :post,
-        class: "px-3 py-1 bg-indigo-600 text-white rounded" %>
+      <%= button_to "▲",
+          room_queue_item_votes_path(qi.room.slug, qi),
+          method: :post,
+          class: "btn btn-primary btn-sm",
+          title: "Votar" %>
     <% end %>
 
     <% if user && (qi.added_by_id == user.id || qi.room.host?(user)) %>
-      <%= button_to "Remover",
-        room_queue_item_path(qi.room.slug, qi),
-        method: :delete,
-        form: { data: { turbo_confirm: "Remover da fila?" } },
-        class: "px-3 py-1 border rounded" %>
+      <%= button_to "✕",
+          room_queue_item_path(qi.room.slug, qi),
+          method: :delete,
+          form: { data: { turbo_confirm: "Remover da fila?" } },
+          class: "btn btn-danger btn-sm",
+          title: "Remover" %>
     <% end %>
   </div>
 </div>

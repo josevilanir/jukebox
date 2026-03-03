@@ -1,9 +1,22 @@
-<div class="bg-gray-50 p-4 rounded">
-  <h3 class="font-semibold mb-2">Adicionar música (YouTube URL)</h3>
-  <%= form_with url: room_queue_items_path(room.slug), method: :post, data: { turbo: true } do %>
-    <div class="flex gap-2">
-      <input type="url" name="url" placeholder="https://www.youtube.com/watch?v=..." class="flex-1 border p-2 rounded" required>
-      <button type="submit" class="px-4 py-2 bg-emerald-600 text-white rounded">Adicionar</button>
-    </div>
+<%# queue_items/_form.html.erb — YouTube URL add track form %>
+<div class="card-elevated">
+  <h3 class="font-semibold text-sm mb-3" style="color: var(--text-muted);">
+    Adicionar música <span class="tag ml-1">YouTube URL</span>
+  </h3>
+  <%= form_with url: room_queue_items_path(room.slug),
+                method: :post,
+                data: { turbo: true },
+                class: "flex gap-2" do %>
+    <input type="url"
+           name="url"
+           placeholder="https://www.youtube.com/watch?v=..."
+           class="input flex-1 text-sm"
+           required>
+    <button type="submit" class="btn btn-success shrink-0">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
+      </svg>
+      <span class="hidden sm:inline">Adicionar</span>
+    </button>
   <% end %>
 </div>
