@@ -1,30 +1,58 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
   <head>
     <title><%= content_for(:title) || "Jukebox" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
+    <meta name="description" content="Jukebox – ouça músicas em grupo, em tempo real.">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
     <%= yield :head %>
-
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
-
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <main class="container mx-auto mt-28 px-5 flex">
+  <body class="min-h-screen flex flex-col">
+
+    <%# ─── Top navbar ───────────────────────────────────────────── %>
+    <nav class="app-nav gap-4">
+      <%= link_to root_path, class: "flex items-center gap-2 font-bold text-lg mr-auto" do %>
+        <svg class="w-7 h-7 text-purple-500" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 3a9 9 0 100 18A9 9 0 0012 3zm0 2a7 7 0 110 14A7 7 0 0112 5zm0 2a5 5 0 100 10A5 5 0 0012 7zm0 2a3 3 0 110 6 3 3 0 010-6z"/>
+        </svg>
+        <span class="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400">Jukebox</span>
+      <% end %>
+
+      <% if content_for?(:nav_actions) %>
+        <%= yield :nav_actions %>
+      <% end %>
+
+      <%= link_to "Nova sala", new_room_path, class: "btn btn-primary btn-sm hidden sm:inline-flex" %>
+    </nav>
+
+    <%# ─── Flash messages ────────────────────────────────────────── %>
+    <div class="max-w-6xl w-full mx-auto px-4 pt-3">
+      <% flash.each do |type, message| %>
+        <% color = type.to_s == "alert" ? "border-red-500/40 text-red-300 bg-red-500/10" : "border-emerald-500/40 text-emerald-300 bg-emerald-500/10" %>
+        <div class="mb-3 px-4 py-2 rounded-lg border text-sm animate-fade-up <%= color %>">
+          <%= message %>
+        </div>
+      <% end %>
+    </div>
+
+    <%# ─── Main content ──────────────────────────────────────────── %>
+    <main class="flex-1 max-w-6xl w-full mx-auto px-4 pb-8">
       <%= yield %>
     </main>
+
+    <%# ─── Footer ────────────────────────────────────────────────── %>
+    <footer class="text-center text-xs py-4" style="color: var(--text-faint);">
+      Jukebox &copy; <%= Time.current.year %> — feito com ♪
+    </footer>
+
   </body>
 </html>
