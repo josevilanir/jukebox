@@ -1,16 +1,20 @@
-<div class="mt-6">
-  <h2 class="text-xl font-semibold mb-3">Tocadas recentemente</h2>
-  <div class="space-y-2">
-    <% room.history(limit: 10).each do |qi| %>
-      <div class="border rounded p-3 flex items-center gap-3 bg-white">
-        <img src="<%= qi.track.thumbnail_url %>" alt="" class="w-16 h-10 object-cover rounded">
-        <div class="flex-1">
-          <div class="font-medium"><%= qi.track.title %></div>
-          <div class="text-xs text-gray-500">
-            Tocada em <%= l qi.played_at, format: :short %> • por <%= qi.added_by.name %>
+<%# rooms/_history.html.erb — recently played dark list %>
+<% recents = room.history(limit: 10) %>
+<% if recents.any? %>
+  <div class="card">
+    <h2 class="font-bold text-base mb-3" style="color: var(--text-muted);">Tocadas recentemente</h2>
+    <div class="space-y-2">
+      <% recents.each do |qi| %>
+        <div class="flex items-center gap-3 px-2 py-2 rounded-lg opacity-60 hover:opacity-80 transition-opacity">
+          <img src="<%= qi.track.thumbnail_url %>" alt="" class="thumb">
+          <div class="flex-1 min-w-0">
+            <div class="text-sm font-medium truncate"><%= qi.track.title %></div>
+            <div class="text-xs" style="color: var(--text-faint);">
+              Tocada <%= l qi.played_at, format: :short %> · por <%= qi.added_by.name %>
+            </div>
           </div>
         </div>
-      </div>
-    <% end %>
+      <% end %>
+    </div>
   </div>
-</div>
+<% end %>

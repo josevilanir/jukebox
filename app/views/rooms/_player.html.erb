@@ -1,27 +1,47 @@
-<div class="space-y-2">
-  <div id="player" class="aspect-video bg-black/10 rounded overflow-hidden flex items-center justify-center">
-    <% current = room.now_playing %>
+<%# rooms/_player.html.erb — glassmorphism Now Playing hero %>
+<% current = room.now_playing %>
 
-    <% if current&.track&.youtube_id %>
+<div id="player" class="card-elevated overflow-hidden">
+  <% if current&.track&.youtube_id %>
+    <%# Now playing hero with glassmorphism meta bar %>
+    <div class="relative">
       <div data-controller="yt-player"
            data-yt-player-video-id-value="<%= current.track.youtube_id %>"
            data-yt-player-room-slug-value="<%= room.slug %>"
            data-yt-player-autoplay-value="<%= room.host?(current_user) %>"
-           class="w-full h-full">
+           class="w-full aspect-video bg-black rounded-lg overflow-hidden">
         <div data-yt-player-target="frame" class="w-full h-full"></div>
       </div>
-    <% else %>
-      <div class="p-6 text-gray-600">Nenhuma música tocando.</div>
-    <% end %>
-  </div>
 
-  <div class="flex items-center gap-2">
-    <% if room.queue_open.any? && room.host?(current_user) %>
-      <%= button_to "Tocar próxima", play_next_room_path(room.slug),
-            method: :post,
-            class: "px-4 py-2 bg-emerald-600 text-white rounded" %>
-    <% elsif room.queue_open.any? %>
-      <span class="text-xs text-gray-500">Apenas o host pode tocar a próxima.</span>
-    <% end %>
-  </div>
+      <%# Meta overlay at bottom of player %>
+      <div class="glass mt-0 rounded-b-xl px-4 py-3 -mt-1 flex items-center gap-3">
+        <div class="flex-1 min-w-0">
+          <div class="font-semibold text-sm truncate"><%= current.track.title %></div>
+          <div class="text-xs truncate" style="color: var(--text-muted);">
+            Adicionado por <%= current.added_by.name %>
+          </div>
+        </div>
+        <span class="badge badge-live animate-pulse-glow">
+          <span class="live-dot mr-1"></span> Tocando
+        </span>
+        <% if room.queue_open.any? && room.host?(current_user) %>
+          <%= button_to "⏭ Próxima", play_next_room_path(room.slug),
+                method: :post,
+                class: "btn btn-success btn-sm" %>
+        <% end %>
+      </div>
+    </div>
+  <% else %>
+    <%# Empty player state %>
+    <div class="flex flex-col items-center justify-center py-14 text-center">
+      <div class="text-6xl mb-4 opacity-30">🎵</div>
+      <p class="font-semibold text-lg mb-1">A pista está vazia!</p>
+      <p class="text-sm" style="color: var(--text-muted);">Adicione a primeira música abaixo ↓</p>
+      <% if room.queue_open.any? && room.host?(current_user) %>
+        <%= button_to "⏭ Iniciar", play_next_room_path(room.slug),
+              method: :post,
+              class: "btn btn-success mt-6" %>
+      <% end %>
+    </div>
+  <% end %>
 </div>

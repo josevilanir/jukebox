@@ -1,15 +1,48 @@
-<div class="max-w-3xl mx-auto p-6">
-  <h1 class="text-3xl font-bold mb-4">Salas</h1>
+<%# ─── Rooms index / Splash ─────────────────────────────────────── %>
+<div class="py-10 animate-fade-up">
 
-  <div class="mb-4">
-    <%= link_to "Criar nova sala", new_room_path, class: "px-4 py-2 bg-indigo-600 text-white rounded" %>
+  <%# Hero -%>
+  <div class="text-center mb-12">
+    <div class="inline-flex items-center gap-2 badge badge-live mb-4">
+      <span class="live-dot"></span> Ouvindo juntos em tempo real
+    </div>
+    <h1 class="text-5xl font-extrabold tracking-tight leading-tight mb-4">
+      Sua
+      <span class="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">pista de dança</span>
+      colaborativa
+    </h1>
+    <p class="text-lg max-w-xl mx-auto" style="color: var(--text-muted);">
+      Crie uma sala, convide os amigos e deixem a galera votar na próxima música. Nada de DJ ditador.
+    </p>
+    <div class="mt-8 flex items-center justify-center gap-4 flex-wrap">
+      <%= link_to "Criar nova sala", new_room_path, class: "btn btn-primary px-8 py-3 text-base" %>
+    </div>
   </div>
 
-  <ul class="space-y-2">
-    <% @rooms.each do |room| %>
-      <li>
-        <%= link_to room.name, room_path(room.slug), class: "text-indigo-700 underline" %>
-      </li>
-    <% end %>
-  </ul>
+  <%# Salas abertas -%>
+  <% if @rooms.any? %>
+    <h2 class="text-xl font-bold mb-4" style="color: var(--text-muted);">Salas abertas</h2>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <% @rooms.each do |room| %>
+        <%= link_to room_path(room.slug), class: "card group flex flex-col gap-3 hover:border-purple-500/50 transition-all duration-200 hover:-translate-y-0.5" do %>
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-base truncate"><%= room.name %></span>
+            <span class="badge badge-live"><span class="live-dot mr-1.5"></span>Ao vivo</span>
+          </div>
+          <div class="text-sm" style="color: var(--text-muted);">
+            <%= pluralize(room.queue_open.length, "música", "músicas") %> na fila
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  <% else %>
+    <%# Empty state -%>
+    <div class="card text-center py-16 max-w-md mx-auto">
+      <div class="text-5xl mb-4">🎧</div>
+      <h3 class="text-lg font-semibold mb-2">Nenhuma sala aberta</h3>
+      <p class="text-sm mb-6" style="color: var(--text-muted);">Seja o primeiro DJ da noite!</p>
+      <%= link_to "Criar uma sala", new_room_path, class: "btn btn-primary" %>
+    </div>
+  <% end %>
+
 </div>

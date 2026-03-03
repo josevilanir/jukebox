@@ -1,16 +1,33 @@
-<div class="bg-white border rounded p-3 space-y-3">
-  <h2 class="text-xl font-semibold">Chat</h2>
+<%# rooms/_chat.html.erb — dark floating chat panel %>
+<div class="card flex flex-col" style="height: 480px;">
+  <h2 class="font-bold text-base mb-3">Chat</h2>
 
-  <!-- lista -->
-  <div id="messages" class="space-y-2 max-h-64 overflow-auto pr-2">
+  <%# Messages list %>
+  <div id="messages"
+       class="flex-1 overflow-y-auto space-y-3 pr-1 scroll-area"
+       data-controller="chat-scroll">
     <% room.messages.order(created_at: :asc).each do |m| %>
       <%= render "messages/message", message: m %>
     <% end %>
   </div>
 
-  <!-- form -->
-  <%= form_with url: room_messages_path(room.slug), data: { turbo: true }, class: "flex gap-2" do %>
-    <input type="text" name="content" placeholder="Escreva uma mensagem..." class="flex-1 border p-2 rounded" required>
-    <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded">Enviar</button>
+  <div class="divider"></div>
+
+  <%# Message form %>
+  <%= form_with url: room_messages_path(room.slug),
+                data: { turbo: true },
+                class: "flex gap-2" do %>
+    <input type="text"
+           name="content"
+           placeholder="Mensagem..."
+           autocomplete="off"
+           class="input text-sm flex-1"
+           required>
+    <button type="submit" class="btn btn-primary btn-sm px-4">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+      </svg>
+    </button>
   <% end %>
 </div>

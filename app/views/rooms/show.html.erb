@@ -1,26 +1,52 @@
+<%# rooms/show.html.erb ─ premium dark-mode room view %>
 <%= turbo_stream_from @room %>
 
-<div class="max-w-6xl mx-auto p-6 space-y-6">
-  <header class="flex items-center justify-between">
-    <h1 class="text-3xl font-bold"><%= @room.name %></h1>
-    <div class="text-sm text-gray-500">
-      Você é: <strong><%= current_user.name %></strong>
+<% content_for :title, "#{@room.name} · Jukebox" %>
+
+<% content_for :nav_actions do %>
+  <div class="flex items-center gap-3">
+    <div class="hidden sm:flex items-center gap-2 text-sm" style="color: var(--text-muted);">
+      <span class="font-semibold" style="color: var(--text-primary);"><%= current_user.name %></span>
       <% if @room.host?(current_user) %>
-        <span class="ml-2 px-2 py-0.5 rounded bg-amber-500    text-white text-xs">Host</span>
+        <span class="badge badge-host">Host</span>
       <% end %>
     </div>
-  </header>
+    <button
+      onclick="navigator.clipboard.writeText(window.location.href).then(()=>this.textContent='Copiado ✓')"
+      class="btn btn-ghost btn-sm font-mono">
+      <%= @room.slug %>
+    </button>
+  </div>
+<% end %>
 
+<div class="py-5 space-y-5 animate-fade-up">
+
+  <%# ─ Room Header ──────────────────────────────────────────────── %>
+  <div class="flex items-center gap-3">
+    <span class="live-dot"></span>
+    <h1 class="text-2xl font-extrabold tracking-tight"><%= @room.name %></h1>
+    <span class="badge badge-live ml-auto"><%= @room.queue_open.length %> na fila</span>
+  </div>
+
+  <%# ─ Player hero ──────────────────────────────────────────────── %>
   <%= render "rooms/player", room: @room %>
 
-  <div class="grid md:grid-cols-3 gap-6">
-    <div class="md:col-span-2 space-y-4">
-      <%= render "queue_items/form", room: @room %>
+  <%# ─ Add track ────────────────────────────────────────────────── %>
+  <%= render "queue_items/form", room: @room %>
+
+  <%# ─ Main grid ────────────────────────────────────────────────── %>
+  <div class="grid lg:grid-cols-3 gap-5">
+
+    <%# Queue + History %>
+    <div class="lg:col-span-2 space-y-5">
       <div id="queue"><%= render "rooms/queue", room: @room %></div>
       <%= render "rooms/history", room: @room %>
     </div>
+
+    <%# Chat %>
     <div>
       <%= render "rooms/chat", room: @room %>
     </div>
+
   </div>
 </div>

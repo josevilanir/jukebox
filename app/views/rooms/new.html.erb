@@ -1,11 +1,24 @@
-<div class="max-w-xl mx-auto p-6">
-  <h1 class="text-2xl font-bold mb-4">Criar sala</h1>
+<%# rooms/new.html.erb — dark create room form %>
+<% content_for :title, "Criar sala · Jukebox" %>
 
-  <%= form_with model: @room do |f| %>
-    <div class="mb-4">
-      <%= f.label :name, "Nome da sala", class: "block mb-1" %>
-      <%= f.text_field :name, class: "w-full border p-2 rounded" %>
-    </div>
-    <%= f.submit "Criar", class: "px-4 py-2 bg-indigo-600 text-white rounded" %>
-  <% end %>
+<div class="max-w-md mx-auto py-16 animate-fade-up">
+  <div class="card">
+    <h1 class="text-2xl font-extrabold mb-1">Criar sala</h1>
+    <p class="text-sm mb-6" style="color: var(--text-muted);">
+      Dê um nome e compartilhe o código com seus amigos.
+    </p>
+
+    <%= form_with model: @room do |f| %>
+      <div class="space-y-4">
+        <div>
+          <%= f.label :name, "Nome da sala", class: "block text-sm font-medium mb-1.5" %>
+          <%= f.text_field :name,
+                placeholder: "ex: Pré-show dos amigos",
+                class: "input",
+                autofocus: true %>
+        </div>
+        <%= f.submit "Criar sala", class: "btn btn-primary w-full py-3 mt-2 text-base" %>
+      </div>
+    <% end %>
+  </div>
 </div>

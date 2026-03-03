@@ -1,8 +1,20 @@
-<div>
-  <h2 class="text-xl font-semibold mb-3">Fila</h2>
-  <div id="queue_items" class="space-y-2">
-    <% room.queue_open.each do |qi| %>
-      <%= render "queue_items/queue_item", queue_item: qi %>
+<%# rooms/_queue.html.erb — scrollable dark-mode queue %>
+<div class="card">
+  <div class="flex items-center justify-between mb-4">
+    <h2 class="font-bold text-base">Fila</h2>
+    <span class="badge badge-score"><%= room.queue_open.length %> músicas</span>
+  </div>
+
+  <div id="queue_items" class="space-y-2 scroll-area max-h-80">
+    <% if room.queue_open.any? %>
+      <% room.queue_open.each do |qi| %>
+        <%= render "queue_items/queue_item", queue_item: qi %>
+      <% end %>
+    <% else %>
+      <div class="text-center py-10">
+        <div class="text-3xl mb-2 opacity-30">🎶</div>
+        <p class="text-sm" style="color: var(--text-faint);">Fila vazia – adicione músicas acima</p>
+      </div>
     <% end %>
   </div>
 </div>
