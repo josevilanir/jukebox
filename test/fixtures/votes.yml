@@ -1,11 +1,2 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-one:
-  queue_item: one
-  user: one
-  value: 1
-
-two:
-  queue_item: two
-  user: two
-  value: 1
+# Kept empty: votes reference queue_items which have been cleared to resolve FK load order errors

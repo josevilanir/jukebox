@@ -1,11 +1,12 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+# owner_id is nullable — omit it to avoid load-order FK errors (alphabetical fixture loading)
 
 one:
-  name: MyString
-  slug: MyString
-  status: MyString
+  name: Rock Room
+  slug: rock-room
+  status: active
 
 two:
-  name: MyString
-  slug: MyString
-  status: MyString
+  name: Pop Room
+  slug: pop-room
+  status: active

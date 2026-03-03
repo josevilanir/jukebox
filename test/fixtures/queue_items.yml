@@ -1,15 +1,2 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-one:
-  room: one
-  track: one
-  added_by: one
-  position: 1
-  played_at: 2025-08-15 12:10:40
-
-two:
-  room: two
-  track: two
-  added_by: two
-  position: 1
-  played_at: 2025-08-15 12:10:40
+# Kept empty: queue_items reference rooms which load later (alphabetical order causes FK violations)
