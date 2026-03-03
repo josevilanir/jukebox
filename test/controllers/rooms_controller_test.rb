@@ -2,22 +2,23 @@ require "test_helper"
 
 class RoomsControllerTest < ActionDispatch::IntegrationTest
   test "should get index" do
-    get rooms_index_url
+    get rooms_path
     assert_response :success
   end
 
   test "should get new" do
-    get rooms_new_url
+    get new_room_path
     assert_response :success
   end
 
   test "should get create" do
-    get rooms_create_url
-    assert_response :success
+    post rooms_path, params: { room: { name: "Test Room" } }
+    assert_response :redirect
   end
 
   test "should get show" do
-    get rooms_show_url
+    room = rooms(:one)
+    get room_path(room.slug)
     assert_response :success
   end
 end
