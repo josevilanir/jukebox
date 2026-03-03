@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get "home/index"
   resources :rooms, param: :slug, only: %i[index new create show] do
     post :play_next, on: :member
 
