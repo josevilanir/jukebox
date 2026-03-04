@@ -33,6 +33,22 @@ class Room < ApplicationRecord
     user.present? && owner_id.present? && owner_id == user.id
   end
 
+  def host_online?
+    return false unless owner_id.present?
+
+    set = Rails.cache.read("presence:#{slug}") || {}
+    cutoff = 40.seconds.ago.to_i
+    set.key?(owner_id.to_s) && set[owner_id.to_s][:at] >= cutoff
+  end
+
+  def dj_mode_active?
+    dj_mode? || !host_online?
+  end
+
+  def can_advance?(user)
+    host?(user) || dj_mode_active?
+  end
+
   private
 
   def ensure_slug

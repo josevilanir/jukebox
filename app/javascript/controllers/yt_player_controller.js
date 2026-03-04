@@ -4,8 +4,7 @@ export default class extends Controller {
   static targets = ["frame"]
   static values = {
     videoId: String,
-    roomSlug: String,
-    autoplay: { type: Boolean, default: false }
+    roomSlug: String
   }
 
   connect() {
@@ -43,7 +42,7 @@ export default class extends Controller {
         rel: 0,
         playsinline: 1,
         controls: 1,
-        autoplay: this.autoplayValue ? 1 : 0
+        autoplay: 1
       },
       events: {
         onReady: (e) => this.onReady(e),
@@ -53,10 +52,7 @@ export default class extends Controller {
   }
 
   onReady(e) {
-    // em alguns browsers o autoplay do playerVars não dispara
-    if (this.autoplayValue) {
-      try { e.target.playVideo() } catch (_) {}
-    }
+    try { e.target.playVideo() } catch (_) {}
   }
 
   onStateChange(e) {

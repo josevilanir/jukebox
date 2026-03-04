@@ -8,13 +8,12 @@
       <div data-controller="yt-player"
            data-yt-player-video-id-value="<%= current.track.youtube_id %>"
            data-yt-player-room-slug-value="<%= room.slug %>"
-           data-yt-player-autoplay-value="<%= room.host?(current_user) %>"
            class="w-full aspect-video bg-black rounded-lg overflow-hidden">
         <div data-yt-player-target="frame" class="w-full h-full"></div>
       </div>
 
       <%# Meta overlay at bottom of player %>
-      <div class="glass mt-0 rounded-b-xl px-4 py-3 -mt-1 flex items-center gap-3">
+      <div class="glass mt-0 rounded-b-xl px-4 py-3 -mt-1 flex items-center gap-3 flex-wrap">
         <div class="flex-1 min-w-0">
           <div class="font-semibold text-sm truncate"><%= current.track.title %></div>
           <div class="text-xs truncate" style="color: var(--text-muted);">
@@ -24,8 +23,26 @@
         <span class="badge badge-live animate-pulse-glow">
           <span class="live-dot mr-1"></span> Tocando
         </span>
-        <% if room.queue_open.any? && room.host?(current_user) %>
-          <%= button_to "⏭ Próxima", play_next_room_path(room.slug),
+
+        <%# Botão de skip vote %>
+        <% user_voted = current.skip_votes.exists?(user: current_user) %>
+        <% skip_count = current.skip_votes.count %>
+        <% present_count = [PresenceChannel.user_count(room.slug), 1].max %>
+        <% threshold = [(present_count * 0.5).ceil, 2].max %>
+        <%= button_to(
+              room_queue_item_skip_votes_path(room.slug, current),
+              method: :post,
+              class: "btn btn-sm #{user_voted ? 'btn-ghost opacity-50 cursor-not-allowed' : 'btn-ghost hover:text-yellow-400'}",
+              disabled: user_voted,
+              title: "Votar para pular"
+            ) do %>
+          ⏭ Pular
+          <span class="ml-1 text-xs opacity-70"><%= skip_count %>/<%= threshold %></span>
+        <% end %>
+
+        <%# Botão Próxima — visível quando pode avançar %>
+        <% if room.queue_open.length > 1 && room.can_advance?(current_user) %>
+          <%= button_to "▶ Próxima", play_next_room_path(room.slug),
                 method: :post,
                 class: "btn btn-success btn-sm" %>
         <% end %>
@@ -37,7 +54,7 @@
       <div class="text-6xl mb-4 opacity-30">🎵</div>
       <p class="font-semibold text-lg mb-1">A pista está vazia!</p>
       <p class="text-sm" style="color: var(--text-muted);">Adicione a primeira música abaixo ↓</p>
-      <% if room.queue_open.any? && room.host?(current_user) %>
+      <% if room.queue_open.any? && room.can_advance?(current_user) %>
         <%= button_to "⏭ Iniciar", play_next_room_path(room.slug),
               method: :post,
               class: "btn btn-success mt-6" %>

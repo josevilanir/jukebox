@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_29_170940) do
+ActiveRecord::Schema[8.0].define(version: 2026_03_03_175147) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -45,8 +45,19 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_29_170940) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "owner_id"
+    t.boolean "dj_mode", default: false, null: false
     t.index ["owner_id"], name: "index_rooms_on_owner_id"
     t.index ["slug"], name: "index_rooms_on_slug", unique: true
+  end
+
+  create_table "skip_votes", force: :cascade do |t|
+    t.bigint "queue_item_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["queue_item_id", "user_id"], name: "index_skip_votes_on_queue_item_id_and_user_id", unique: true
+    t.index ["queue_item_id"], name: "index_skip_votes_on_queue_item_id"
+    t.index ["user_id"], name: "index_skip_votes_on_user_id"
   end
 
   create_table "tracks", force: :cascade do |t|
@@ -65,6 +76,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_29_170940) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "name_set", default: false, null: false
   end
 
   create_table "votes", force: :cascade do |t|
@@ -84,6 +96,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_29_170940) do
   add_foreign_key "queue_items", "tracks"
   add_foreign_key "queue_items", "users", column: "added_by_id"
   add_foreign_key "rooms", "users", column: "owner_id"
+  add_foreign_key "skip_votes", "queue_items"
+  add_foreign_key "skip_votes", "users"
   add_foreign_key "votes", "queue_items"
   add_foreign_key "votes", "users"
 end
