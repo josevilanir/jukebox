@@ -26,16 +26,16 @@
           <span class="live-dot mr-1"></span> Tocando
         </span>
 
-        <%# Rewind / Forward — controles locais do player %>
+        <%# Rewind / Forward — visíveis apenas para o host via CSS %>
         <button type="button"
                 data-action="click->yt-player#rewind"
-                class="btn btn-sm btn-ghost"
+                class="btn btn-sm btn-ghost host-only"
                 title="Voltar 15 segundos">
           ⏪ -15s
         </button>
         <button type="button"
                 data-action="click->yt-player#forward"
-                class="btn btn-sm btn-ghost"
+                class="btn btn-sm btn-ghost host-only"
                 title="Avançar 15 segundos">
           +15s ⏩
         </button>

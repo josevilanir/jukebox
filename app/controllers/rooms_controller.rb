@@ -41,6 +41,8 @@ class RoomsController < ApplicationController
   end
 
   def seek
+    return head :forbidden unless @room.host?(current_user)
+
     current = @room.now_playing
     return head :no_content unless current&.started_at
 
