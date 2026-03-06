@@ -7,6 +7,8 @@ Rails.application.routes.draw do
     member do
       post :play_next
       patch :toggle_dj_mode
+      patch :close
+      patch :seek
     end
 
     resources :queue_items, only: %i[create destroy] do

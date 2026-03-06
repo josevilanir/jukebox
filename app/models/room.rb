@@ -49,6 +49,18 @@ class Room < ApplicationRecord
     host?(user) || dj_mode_active?
   end
 
+  def closed?
+    status == "closed"
+  end
+
+  # Marks current_item as played and timestamps the next song so
+  # late-joining users can seek to the correct position.
+  def advance!(current_item)
+    next_item = queue_open.second
+    next_item&.update_columns(started_at: Time.current)
+    current_item.update!(played_at: Time.current)
+  end
+
   private
 
   def ensure_slug

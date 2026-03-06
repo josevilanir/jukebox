@@ -5,6 +5,7 @@ class QueueItem < ApplicationRecord
   has_many :votes, dependent: :destroy
   has_many :skip_votes, dependent: :destroy
 
+  before_create :assign_started_at_if_first
   after_commit :broadcast_updates
 
   def score
@@ -12,6 +13,11 @@ class QueueItem < ApplicationRecord
   end
 
   private
+
+  def assign_started_at_if_first
+    # If the queue is empty this item will immediately be now_playing
+    self.started_at = Time.current if room.queue_open.none?
+  end
 
   def broadcast_updates
     broadcast_replace_to(

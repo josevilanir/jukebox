@@ -1,10 +1,11 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["frame"]
+  static targets = ["frame", "seek"]
   static values = {
     videoId: String,
-    roomSlug: String
+    roomSlug: String,
+    startedAt: Number
   }
 
   connect() {
@@ -52,6 +53,10 @@ export default class extends Controller {
   }
 
   onReady(e) {
+    if (this.startedAtValue > 0) {
+      const elapsed = Math.floor(Date.now() / 1000 - this.startedAtValue)
+      if (elapsed > 0) e.target.seekTo(elapsed, true)
+    }
     try { e.target.playVideo() } catch (_) {}
   }
 
@@ -60,6 +65,44 @@ export default class extends Controller {
     if (e.data === YT.PlayerState.ENDED) {
       this.playNext()
     }
+  }
+
+  // Called by Turbo when the hidden #player-seek div is replaced (seek broadcast)
+  seekTargetConnected(el) {
+    const startedAt = parseInt(el.dataset.startedAt, 10)
+    if (!this.player || startedAt <= 0) return
+    const elapsed = Math.floor(Date.now() / 1000 - startedAt)
+    this.player.seekTo(Math.max(0, elapsed), true)
+  }
+
+  rewind() {
+    this.seekBy(-15)
+  }
+
+  forward() {
+    this.seekBy(15)
+  }
+
+  seekBy(delta) {
+    if (!this.player) return
+    const duration = this.player.getDuration() || Infinity
+    const newTime = Math.max(0, Math.min(duration, this.player.getCurrentTime() + delta))
+    // Seek locally immediately for instant feedback
+    this.player.seekTo(newTime, true)
+    // Broadcast the new position to all other users
+    this.sendSeek(newTime)
+  }
+
+  sendSeek(currentTime) {
+    const token = document.querySelector('meta[name="csrf-token"]')?.content
+    fetch(`/rooms/${encodeURIComponent(this.roomSlugValue)}/seek`, {
+      method: "PATCH",
+      headers: {
+        "X-CSRF-Token": token,
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: `current_time=${currentTime}`
+    })
   }
 
   playNext() {

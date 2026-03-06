@@ -4,11 +4,13 @@
 <div id="player" class="card-elevated overflow-hidden">
   <% if current&.track&.youtube_id %>
     <%# Now playing hero with glassmorphism meta bar %>
-    <div class="relative">
-      <div data-controller="yt-player"
-           data-yt-player-video-id-value="<%= current.track.youtube_id %>"
-           data-yt-player-room-slug-value="<%= room.slug %>"
-           class="w-full aspect-video bg-black rounded-lg overflow-hidden">
+    <div class="relative"
+         data-controller="yt-player"
+         data-yt-player-video-id-value="<%= current.track.youtube_id %>"
+         data-yt-player-room-slug-value="<%= room.slug %>"
+         data-yt-player-started-at-value="<%= current.started_at&.to_i || 0 %>">
+      <%= render "rooms/player_seek", started_at: current.started_at&.to_i || 0 %>
+      <div class="w-full aspect-video bg-black rounded-lg overflow-hidden">
         <div data-yt-player-target="frame" class="w-full h-full"></div>
       </div>
 
@@ -23,6 +25,20 @@
         <span class="badge badge-live animate-pulse-glow">
           <span class="live-dot mr-1"></span> Tocando
         </span>
+
+        <%# Rewind / Forward — controles locais do player %>
+        <button type="button"
+                data-action="click->yt-player#rewind"
+                class="btn btn-sm btn-ghost"
+                title="Voltar 15 segundos">
+          ⏪ -15s
+        </button>
+        <button type="button"
+                data-action="click->yt-player#forward"
+                class="btn btn-sm btn-ghost"
+                title="Avançar 15 segundos">
+          +15s ⏩
+        </button>
 
         <%# Botão de skip vote %>
         <% user_voted = current.skip_votes.exists?(user: current_user) %>
