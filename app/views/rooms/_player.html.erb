@@ -10,8 +10,8 @@
          data-yt-player-room-slug-value="<%= room.slug %>"
          data-yt-player-started-at-value="<%= current.started_at&.to_i || 0 %>">
       <%= render "rooms/player_seek", started_at: current.started_at&.to_i || 0 %>
-      <div class="w-full aspect-video bg-black rounded-lg overflow-hidden">
-        <div data-yt-player-target="frame" class="w-full h-full"></div>
+      <div data-yt-player-target="container" class="w-full aspect-video bg-black rounded-lg overflow-hidden relative">
+        <div id="yt-player-placeholder" class="absolute inset-0 w-full h-full"></div>
       </div>
 
       <%# Meta overlay at bottom of player %>

@@ -35,3 +35,9 @@
 
 /app/assets/builds/*
 !/app/assets/builds/.keep
+
+# Transient files
+.claude/
+out.txt
+test_output.txt
+test_output_*.txt

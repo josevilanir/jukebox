@@ -3,9 +3,35 @@ class QueueItemsController < ApplicationController
 
   def create
     begin
-      track = Track.from_youtube_url(params[:url])
+      if params[:youtube_id].present?
+        track = Track.find_or_create_by!(source: "youtube", external_id: params[:youtube_id]) do |t|
+          t.title = params[:title]
+          t.thumbnail_url = params[:thumbnail_url]
+        end
+      else
+        url_param = params[:url].to_s.strip
+        if url_param.match?(/^https?:\/\//)
+          track = Track.from_youtube_url(url_param)
+        else
+          # Fallback: Treat as a direct search query if the user hit Enter too fast
+          results = YoutubeSearchService.search(url_param)
+          if results.any?
+            top = results.first
+            track = Track.find_or_create_by!(source: "youtube", external_id: top[:id]) do |t|
+              t.title = top[:title]
+              t.thumbnail_url = top[:thumbnail_url]
+            end
+          else
+            redirect_to room_path(@room.slug), alert: "Busca não encontrou resultados para: #{url_param}" and return
+          end
+        end
+      end
     rescue => e
       redirect_to room_path(@room.slug), alert: e.message and return
+    end
+
+    unless YoutubeSearchService.embeddable?(track.external_id)
+      redirect_to room_path(@room.slug), alert: "\"#{track.title}\" não pode ser incorporado (bloqueado pelo dono, ex: VEVO). Tente outra versão do vídeo." and return
     end
 
     existing = @room.queue_items.find_by(track: track, played_at: nil)

@@ -11,6 +11,8 @@ Rails.application.routes.draw do
       patch :seek
     end
 
+    resource :search, only: [:show], controller: "room_searches"
+
     resources :queue_items, only: %i[create destroy] do
       resources :votes, only: %i[create destroy]
       resources :skip_votes, only: [:create]

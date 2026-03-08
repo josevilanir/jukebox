@@ -1,39 +1,26 @@
-# TODO: Jukebox MVP — 4 Novas Features
+# TODO: Feature — Busca Integrada do YouTube (MVP)
 
-## Branch: feature/mvp-4-features
-## Status: DONE ✓
+## Planejamento
 
-## Feature 1 — Nome de usuário ✓
-- [x] Migration: add_name_set_to_users
-- [x] Model: User — name_set column, validates name presence/length
-- [x] Controller: UsersController#update
-- [x] Routes: `resource :user, only: [:update]`
-- [x] ApplicationController: update ensure_current_user + show_name_modal? helper
-- [x] Layout: modal in application.html.erb
-- [x] JS: name_modal_controller.js
+- [x] Criar VPM/Plano de implementação
+- [x] Revisar plano com o usuário
 
-## Feature 2 — Presença em tempo real ✓
-- [x] Channel: PresenceChannel (with user_count class method)
-- [x] JS: presence_controller.js + channels/consumer.js (ActionCable)
-- [x] Importmap: pin @rails/actioncable + pin_all_from channels
-- [x] View: rooms/show.html.erb — updated room header with presence controller
+## Backend (Acesso à API & Controller)
 
-## Feature 3 — Votação de skip ✓
-- [x] Migration: create_skip_votes
-- [x] Model: SkipVote (with after_create_commit threshold check)
-- [x] Model: QueueItem — has_many :skip_votes
-- [x] Controller: SkipVotesController#create
-- [x] Routes: nested skip_votes under queue_items
-- [x] View: rooms/_player.html.erb — skip vote button
-- [x] View: skip_votes/create.turbo_stream.erb
+- [x] Adicionar serviço Keyless usando `ytInitialData`.
+- [x] Criar `YoutubeSearchService` para abstrair a busca `YoutubeSearchService.search("query")`.
+- [x] Criar `Room::SearchesController#index/show` para responder com Turbo Stream os resultados.
 
-## Feature 4 — Modo DJ ✓
-- [x] Migration: add_dj_mode_to_rooms
-- [x] Model: Room — dj_mode_active?, host_online?, can_advance?
-- [x] Controller: RoomsController — toggle_dj_mode + updated play_next
-- [x] Routes: toggle_dj_mode member action
-- [x] View: rooms/show.html.erb — DJ mode badge + toggle button
+## Frontend (UI & Turbo Streams)
 
-## Final ✓
-- [x] bin/rails db:migrate — 3 migrations ran clean
-- [x] bin/rails test — 5/5 tests pass
+- [x] Atualizar o formulário em `_form.html.erb` para ter uma barra de busca interativa (usando Hotwire/Stimulus + Turbo).
+- [x] Criar turbo stream view para exibir vídeos, thumbnails e durações.
+- [x] Criar stimulus controller `youtube_search_controller.js` com _debounce_ para ir digitando e buscando auto.
+
+## Criação do Item e Refinamento
+
+- [x] Ajustar `QueueItemsController#create` para poder receber `youtube_id`, `title` e `thumbnail_url` direto dos resultados.
+- [x] Implementar fallback "Estou com Sorte" (pesquisa por texto se não for URL).
+- [x] Corrigir infraestrutura do ActionCable (módulos de Connection e Channel).
+- [x] Implementar tratamento visual de erros de Embed (Erro 150) com auto-skip.
+- [x] Corrigir carregamento de controllers Stimulus (reverter quebra do Importmap).
