@@ -1,7 +1,13 @@
 class CreateSolidCacheEntries < ActiveRecord::Migration[8.0]
   def up
-    # Skip entirely if the table already exists (idempotent for Neon single-DB deployments)
-    return if table_exists?(:solid_cache_entries)
+    # If table exists but with wrong schema (missing byte_size column), drop and recreate
+    if table_exists?(:solid_cache_entries)
+      unless column_exists?(:solid_cache_entries, :byte_size)
+        drop_table :solid_cache_entries
+      else
+        return # Table exists with correct schema, nothing to do
+      end
+    end
 
     create_table :solid_cache_entries do |t|
       t.binary :key, limit: 1024, null: false
