@@ -6,26 +6,20 @@ require "cgi"
 
 class YoutubeSearchService
   def self.embeddable?(video_id)
-    uri = URI("https://www.youtube.com/watch?v=#{CGI.escape(video_id)}")
-    req = Net::HTTP::Get.new(uri)
-    req["User-Agent"] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-    req["Accept-Language"] = "pt-BR,pt;q=0.9,en-US;q=0.8"
+    # YouTube's oEmbed endpoint returns 401 for non-embeddable videos (error 101/150),
+    # 404 for deleted/private, and 200 for videos that can be embedded.
+    # No API key required, and it's more reliable than scraping ytInitialPlayerResponse.
+    uri = URI("https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=#{CGI.escape(video_id)}&format=json")
 
     res = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
       http.open_timeout = 3
-      http.read_timeout = 8
-      http.request(req)
+      http.read_timeout = 5
+      http.request(Net::HTTP::Get.new(uri))
     end
 
-    return true unless res.is_a?(Net::HTTPSuccess)
-
-    # ytInitialPlayerResponse contém playableInEmbed — campo oficial do YouTube
-    match = res.body.match(/"playableInEmbed"\s*:\s*(true|false)/)
-    return true unless match  # fail open se não encontrar o campo
-
-    match[1] == "true"
+    res.is_a?(Net::HTTPSuccess)
   rescue StandardError
-    true # fail open em caso de erro de rede
+    true # fail open on network error
   end
 
   def self.search(query)
