@@ -6,6 +6,6 @@ class CreateVotes < ActiveRecord::Migration[7.1]
       t.integer :value, null: false, default: 1
       t.timestamps
     end
-    add_index :votes, [:queue_item_id, :user_id], unique: true
+    add_index :votes, [ :queue_item_id, :user_id ], unique: true
   end
 end

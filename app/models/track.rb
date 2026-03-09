@@ -8,7 +8,7 @@ class Track < ApplicationRecord
   validates :title, :source, :external_id, presence: true
 
   def youtube_id
-    return external_id if source == "youtube"
+    external_id if source == "youtube"
   end
 
   # Cria/obtém Track a partir de uma URL do YouTube (usa oEmbed, sem API key)

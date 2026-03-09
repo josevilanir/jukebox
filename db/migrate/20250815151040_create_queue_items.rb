@@ -9,6 +9,6 @@ class CreateQueueItems < ActiveRecord::Migration[7.1]
       t.timestamps
     end
 
-    add_index :queue_items, [:room_id, :position]
+    add_index :queue_items, [ :room_id, :position ]
   end
 end

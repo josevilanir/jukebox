@@ -14,7 +14,7 @@ class SkipVote < ApplicationRecord
     skip_count    = queue_item.skip_votes.count
 
     # Threshold: 50% dos presentes, mínimo 2 votos para não pular sozinho
-    threshold = [[(present_count * 0.5).ceil, 2].max, [present_count, 1].max].min
+    threshold = [ [ (present_count * 0.5).ceil, 2 ].max, [ present_count, 1 ].max ].min
 
     room.advance!(queue_item) if skip_count >= threshold
   end

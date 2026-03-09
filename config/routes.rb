@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   get "home/index"
 
-  resource :user, only: [:update]
+  resource :user, only: [ :update ]
 
   resources :rooms, param: :slug, only: %i[index new create show] do
     member do
@@ -11,11 +11,11 @@ Rails.application.routes.draw do
       patch :seek
     end
 
-    resource :search, only: [:show], controller: "room_searches"
+    resource :search, only: [ :show ], controller: "room_searches"
 
     resources :queue_items, only: %i[create destroy] do
       resources :votes, only: %i[create destroy]
-      resources :skip_votes, only: [:create]
+      resources :skip_votes, only: [ :create ]
     end
 
     resources :messages, only: %i[create]

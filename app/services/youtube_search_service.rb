@@ -26,7 +26,7 @@ class YoutubeSearchService
     return [] if query.blank?
 
     uri = URI("https://www.youtube.com/results?search_query=#{CGI.escape(query)}")
-    
+
     req = Net::HTTP::Get.new(uri)
     req["User-Agent"] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
     req["Accept-Language"] = "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7"
@@ -36,7 +36,7 @@ class YoutubeSearchService
       http.open_timeout = 3
       http.request(req)
     end
-    
+
     return [] unless res.is_a?(Net::HTTPSuccess)
 
     # Extrai a variável local onde o frontend do YouTube joga o state inicial da store Redux/Polymer
@@ -53,7 +53,7 @@ class YoutubeSearchService
       contents.each do |item|
         video = item["videoRenderer"]
         next unless video
-        
+
         # Somente pegamos vídeos que têm duração, ignorando canais, playlists ou shorts estranhos
         next unless video["lengthText"]
 
@@ -64,7 +64,7 @@ class YoutubeSearchService
           duration: video.dig("lengthText", "simpleText"),
           channel: video.dig("longBylineText", "runs", 0, "text") || video.dig("ownerText", "runs", 0, "text")
         }
-        
+
         break if results.size >= 8
       end
 
