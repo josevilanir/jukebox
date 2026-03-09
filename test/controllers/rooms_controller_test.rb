@@ -17,7 +17,7 @@ class RoomsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get show" do
-    room = rooms(:one)
+    room = rooms(:active_room)
     get room_path(room.slug)
     assert_response :success
   end

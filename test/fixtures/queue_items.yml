@@ -1,2 +1,12 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-# Kept empty: queue_items reference rooms which load later (alphabetical order causes FK violations)
+# queue_items carrega DEPOIS de rooms e tracks (ordem alfabética ok)
+playing_item:
+  room: active_room
+  track: youtube_track
+  added_by: guest_user
+  position: 0
+
+queued_item:
+  room: active_room
+  track: another_track
+  added_by: guest_user
+  position: 1

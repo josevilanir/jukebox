@@ -1,12 +1,18 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-# owner_id is nullable — omit it to avoid load-order FK errors (alphabetical fixture loading)
-
-one:
+active_room:
   name: Rock Room
   slug: rock-room
   status: active
+  owner: host_user
 
-two:
-  name: Pop Room
-  slug: pop-room
+dj_room:
+  name: DJ Room
+  slug: dj-room
   status: active
+  owner: host_user
+  dj_mode: true
+
+closed_room:
+  name: Closed Room
+  slug: closed-room
+  status: closed
+  owner: host_user

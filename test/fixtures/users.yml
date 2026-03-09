@@ -1,7 +1,11 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+host_user:
+  name: Host User
+  name_set: true
 
-one:
-  name: MyString
+guest_user:
+  name: Guest User
+  name_set: true
 
-two:
-  name: MyString
+third_user:
+  name: Third User
+  name_set: true

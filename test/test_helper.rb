@@ -4,18 +4,12 @@ require "rails/test_help"
 
 module ActiveSupport
   class TestCase
-    # Run tests in parallel with specified workers
     parallelize(workers: :number_of_processors)
-
-    # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
     fixtures :all
 
-    # Disable FK checks during fixture loading (fixtures load alphabetically,
-    # so cross-table references can violate constraints before all tables are populated)
+    # Limpa cache entre testes para evitar contaminação de presença
     setup do
-      ActiveRecord::Base.connection.disable_referential_integrity { } rescue nil
+      Rails.cache.clear
     end
-
-    # Add more helper methods to be used by all tests here...
   end
 end
