@@ -19,13 +19,67 @@
   </div>
 <% end %>
 
-<div class="py-5 space-y-5 animate-fade-up">
+<% if @room.closed? %>
+  <div class="mt-4 p-4 rounded-xl text-center" style="background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #f87171;">
+    Esta sala está encerrada. Apenas o host pode vê-la.
+  </div>
+<% end %>
+
+<div class="py-5 space-y-5 animate-fade-up" <%= "data-room-host" if @room.host?(current_user) %>>
 
   <%# ─ Room Header ──────────────────────────────────────────────── %>
-  <div class="flex items-center gap-3">
+  <div
+    class="flex items-center gap-3 flex-wrap"
+    data-controller="presence"
+    data-presence-slug-value="<%= @room.slug %>">
+
     <span class="live-dot"></span>
     <h1 class="text-2xl font-extrabold tracking-tight"><%= @room.name %></h1>
-    <span class="badge badge-live ml-auto"><%= @room.queue_open.length %> na fila</span>
+
+    <%# DJ Mode badge %>
+    <% if @room.dj_mode? %>
+      <span class="badge" style="background: rgba(251,191,36,0.15); color: #fbbf24; border-color: rgba(251,191,36,0.3);">
+        🎛 Modo DJ
+      </span>
+    <% elsif !@room.host_online? %>
+      <span class="badge" style="background: rgba(156,163,175,0.1); color: #9ca3af; border-color: rgba(156,163,175,0.2);">
+        🎛 Modo DJ (auto)
+      </span>
+    <% end %>
+
+    <div class="ml-auto flex items-center gap-3">
+      <%# Contador de presença %>
+      <span
+        data-presence-target="count"
+        class="text-sm"
+        style="color: var(--text-muted);">
+        1 pessoa ouvindo
+      </span>
+
+      <span class="badge badge-live"><%= @room.queue_open.length %> na fila</span>
+
+      <%# Toggle DJ Mode / Close Room — apenas host %>
+      <% if @room.host?(current_user) %>
+        <%= button_to(
+              toggle_dj_mode_room_path(@room.slug),
+              method: :patch,
+              class: "btn btn-sm btn-ghost"
+            ) do %>
+          <%= @room.dj_mode? ? "🔒 Desligar Modo DJ" : "🎛 Ligar Modo DJ" %>
+        <% end %>
+
+        <% unless @room.closed? %>
+          <%= button_to(
+                close_room_path(@room.slug),
+                method: :patch,
+                data: { turbo_confirm: "Fechar a sala para todos?" },
+                class: "btn btn-sm btn-ghost text-red-400 hover:text-red-300"
+              ) do %>
+            ✕ Fechar sala
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
   </div>
 
   <%# ─ Player hero ──────────────────────────────────────────────── %>

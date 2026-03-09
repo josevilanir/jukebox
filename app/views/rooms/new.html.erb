@@ -9,6 +9,11 @@
     </p>
 
     <%= form_with model: @room do |f| %>
+      <% if @room.errors.any? %>
+        <div class="mb-4 px-4 py-2 rounded-lg border border-red-500/40 text-red-300 bg-red-500/10 text-sm">
+          <%= @room.errors.full_messages.first %>
+        </div>
+      <% end %>
       <div class="space-y-4">
         <div>
           <%= f.label :name, "Nome da sala", class: "block text-sm font-medium mb-1.5" %>

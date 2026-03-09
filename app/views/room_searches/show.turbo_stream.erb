@@ -1,0 +1,32 @@
+<%# app/views/room_searches/show.turbo_stream.erb %>
+<%= turbo_stream.update "search-results" do %>
+  <% if @results.any? %>
+    <div class="mt-3 space-y-2 animate-fade-up">
+      <% @results.each do |video| %>
+        <div class="flex items-center gap-3 p-2 rounded-lg bg-black/20 hover:bg-black/40 transition">
+          <img src="<%= video[:thumbnail_url] %>" class="w-20 h-14 object-cover rounded" alt="<%= video[:title] %>">
+          <div class="flex-1 min-w-0">
+            <div class="text-sm font-semibold truncate text-white" title="<%= video[:title] %>">
+              <%= video[:title] %>
+            </div>
+            <div class="text-xs text-gray-400 truncate">
+              <%= video[:channel] %> • <%= video[:duration] %>
+            </div>
+          </div>
+          <%= form_with url: room_queue_items_path(@room.slug), method: :post, "data-turbo" => true do |f| %>
+            <%= f.hidden_field :youtube_id, value: video[:id] %>
+            <%= f.hidden_field :title, value: video[:title] %>
+            <%= f.hidden_field :thumbnail_url, value: video[:thumbnail_url] %>
+            <button class="btn btn-sm btn-success" data-action="click->youtube-search#clear">
+              +
+            </button>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% elsif params[:query].present? %>
+    <div class="mt-3 text-sm text-gray-400 text-center py-4">
+      Nenhum resultado encontrado.
+    </div>
+  <% end %>
+<% end %>

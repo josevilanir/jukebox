@@ -4,7 +4,6 @@
  */
 
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
-@import "tailwindcss";
 
 /* ─── Design Tokens ──────────────────────────────────────────── */
 :root {
@@ -288,3 +287,7 @@ body {
   overflow-y: auto;
   scrollbar-width: thin;
 }
+
+/* Host-only controls: hidden by default, shown when the page marks the viewer as host */
+.host-only { display: none; }
+[data-room-host] .host-only { display: inline-flex; }

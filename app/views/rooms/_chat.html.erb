@@ -15,7 +15,7 @@
 
   <%# Message form %>
   <%= form_with url: room_messages_path(room.slug),
-                data: { turbo: true },
+                data: { turbo: true, controller: "reset-form", action: "turbo:submit-end->reset-form#reset" },
                 class: "flex gap-2" do %>
     <input type="text"
            name="content"
