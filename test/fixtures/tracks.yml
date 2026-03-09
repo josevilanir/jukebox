@@ -1,17 +1,13 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+youtube_track:
+  title: Never Gonna Give You Up
+  artist: Rick Astley
+  source: youtube
+  external_id: dQw4w9WgXcQ
+  thumbnail_url: https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg
 
-one:
-  title: MyString
-  artist: MyString
-  source: MyString
-  external_id: MyString
-  duration: 1
-  thumbnail_url: MyString
-
-two:
-  title: MyString
-  artist: MyString
-  source: MyString
-  external_id: MyString
-  duration: 1
-  thumbnail_url: MyString
+another_track:
+  title: Bohemian Rhapsody
+  artist: Queen
+  source: youtube
+  external_id: fJ9rUzIMcZQ
+  thumbnail_url: https://img.youtube.com/vi/fJ9rUzIMcZQ/hqdefault.jpg
