@@ -5,11 +5,13 @@ export default class extends Controller {
   static values = {
     videoId: String,
     roomSlug: String,
-    startedAt: Number
+    startedAt: Number,
+    serverTime: Number
   }
 
   connect() {
     if (!this.hasVideoIdValue || !this.videoIdValue) return
+    this.clockDrift = this.hasServerTimeValue ? (Date.now() / 1000 - this.serverTimeValue) : 0
     this.loadApi().then(() => this.buildPlayer())
   }
 
@@ -62,7 +64,7 @@ export default class extends Controller {
 
   onReady(e) {
     if (this.startedAtValue > 0) {
-      const elapsed = Math.floor(Date.now() / 1000 - this.startedAtValue)
+      const elapsed = Math.floor(Date.now() / 1000 - this.clockDrift - this.startedAtValue)
       if (elapsed > 0) e.target.seekTo(elapsed, true)
     }
     try { e.target.playVideo() } catch (_) {}
@@ -101,7 +103,7 @@ export default class extends Controller {
   seekTargetConnected(el) {
     const startedAt = parseInt(el.dataset.startedAt, 10)
     if (!this.player || startedAt <= 0) return
-    const elapsed = Math.floor(Date.now() / 1000 - startedAt)
+    const elapsed = Math.floor(Date.now() / 1000 - this.clockDrift - startedAt)
     this.player.seekTo(Math.max(0, elapsed), true)
   }
 
