@@ -39,3 +39,10 @@ plugin :solid_queue if ENV["SOLID_QUEUE_IN_PUMA"]
 # Specify the PID file. Defaults to tmp/pids/server.pid in development.
 # In other environments, only set the PID file if requested.
 pidfile ENV["PIDFILE"] if ENV["PIDFILE"]
+
+# Clean up inactive rooms when a Puma worker shuts down.
+on_worker_shutdown do
+  Rails.logger.info("[Puma] Worker shutting down — destroying all rooms")
+  Room.destroy_all
+  Rails.logger.info("[Puma] All rooms destroyed")
+end
