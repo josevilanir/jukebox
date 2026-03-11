@@ -77,6 +77,7 @@ GEM
     ast (2.4.3)
     base64 (0.3.0)
     bcrypt_pbkdf (1.1.2)
+    bcrypt_pbkdf (1.1.2-x64-mingw-ucrt)
     benchmark (0.4.1)
     bigdecimal (3.2.2)
     bindex (0.8.1)
@@ -198,6 +199,8 @@ GEM
     raabro (1.4.0)
     racc (1.8.1)
     rack (3.2.0)
+    rack-attack (6.8.0)
+      rack (>= 1.0, < 4)
     rack-session (2.1.1)
       base64 (>= 0.1.0)
       rack (>= 3.0.0)
@@ -356,6 +359,7 @@ DEPENDENCIES
   pg (~> 1.1)
   propshaft
   puma (>= 5.0)
+  rack-attack
   rails (~> 8.0.2, >= 8.0.2.1)
   rubocop-rails-omakase
   selenium-webdriver
