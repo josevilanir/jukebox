@@ -24,3 +24,15 @@
 - [x] Corrigir infraestrutura do ActionCable (módulos de Connection e Channel).
 - [x] Implementar tratamento visual de erros de Embed (Erro 150) com auto-skip.
 - [x] Corrigir carregamento de controllers Stimulus (reverter quebra do Importmap).
+
+---
+
+# TODO: Feature — Rate Limiting Defensivo (rack-attack)
+
+## Plano
+
+- [x] Adicionar gem `rack-attack` ao Gemfile e rodar `bundle install`
+- [x] Criar `config/initializers/rack_attack.rb` com throttles para search e criação de salas
+- [x] Configurar cache store do rack-attack para usar Rails.cache (solid_cache em prod)
+- [x] Tratar resposta 429 com mensagem amigável + header Retry-After
+- [x] Rodar testes — 25/25 passando, 0 falhas
