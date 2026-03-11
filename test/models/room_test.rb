@@ -17,6 +17,23 @@ class RoomTest < ActiveSupport::TestCase
     refute rooms(:active_room).host?(nil)
   end
 
+  # ---- queue_open ----
+
+  test "queue_open orders items by score descending and then created_at ascending" do
+    room = rooms(:active_room)
+    qi1 = queue_items(:playing_item)
+    qi2 = queue_items(:queued_item)
+
+    # By default, both have 0 votes. qi1 was created earlier (fixture order or just id/created_at)
+    assert_equal [qi1, qi2], room.queue_open.to_a
+
+    # Add a vote to qi2, it should move to the top
+    Vote.create!(user: users(:host_user), queue_item: qi2, value: 1)
+    
+    assert_equal [qi2, qi1], room.queue_open.to_a
+    assert_equal 1, room.queue_open.first.score
+  end
+
   # ---- closed? ----
 
   test "closed? returns true for a closed room" do

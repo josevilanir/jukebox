@@ -16,7 +16,7 @@ class QueueItem < ApplicationRecord
 
   def assign_started_at_if_first
     # If the queue is empty this item will immediately be now_playing
-    self.started_at = Time.current if room.queue_open.none?
+    self.started_at = Time.current if room.now_playing.nil?
   end
 
   def broadcast_updates

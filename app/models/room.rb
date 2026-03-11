@@ -16,11 +16,19 @@ class Room < ApplicationRecord
                .left_joins(:votes)
                .select("queue_items.*, COALESCE(SUM(votes.value),0) AS score")
                .group("queue_items.id")
-               .order("score DESC, queue_items.created_at ASC")
+               .order(Arel.sql("CASE WHEN queue_items.started_at IS NOT NULL THEN 0 ELSE 1 END, score DESC, queue_items.created_at ASC"))
   end
 
   def now_playing
-    queue_open.first
+    queue_items.where(played_at: nil).where.not(started_at: nil).first
+  end
+
+  def queue_pending
+    queue_items.where(played_at: nil, started_at: nil)
+               .left_joins(:votes)
+               .select("queue_items.*, COALESCE(SUM(votes.value),0) AS score")
+               .group("queue_items.id")
+               .order("score DESC, queue_items.created_at ASC")
   end
 
   def history(limit: 20)
@@ -62,7 +70,7 @@ class Room < ApplicationRecord
   # Marks current_item as played and timestamps the next song so
   # late-joining users can seek to the correct position.
   def advance!(current_item)
-    next_item = queue_open.second
+    next_item = queue_pending.first
     next_item&.update_columns(started_at: Time.current)
     current_item.update!(played_at: Time.current)
   end
