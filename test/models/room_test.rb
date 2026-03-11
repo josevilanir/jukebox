@@ -24,12 +24,12 @@ class RoomTest < ActiveSupport::TestCase
     qi1 = queue_items(:playing_item)  # has started_at — always pinned first
     qi2 = queue_items(:queued_item)
 
-    assert_equal [qi1, qi2], room.queue_open.to_a
+    assert_equal [ qi1, qi2 ], room.queue_open.to_a
 
     # Even after voting on qi2, the playing item stays at the top
     Vote.create!(user: users(:host_user), queue_item: qi2, value: 1)
 
-    assert_equal [qi1, qi2], room.queue_open.to_a
+    assert_equal [ qi1, qi2 ], room.queue_open.to_a
     assert_equal 1, room.queue_open.second.score
   end
 
