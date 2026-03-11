@@ -20,7 +20,7 @@ class QueueItem < ApplicationRecord
   end
 
   def broadcast_updates
-    broadcast_replace_to(
+    broadcast_update_to(
       room,
       target: "queue",
       partial: "rooms/queue",
