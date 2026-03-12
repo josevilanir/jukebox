@@ -41,3 +41,8 @@
 out.txt
 test_output.txt
 test_output_*.txt
+
+# Load test tooling
+load_test/node_modules/
+load_test/package.json
+load_test/package-lock.json

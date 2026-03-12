@@ -149,6 +149,25 @@ app/
 
 ---
 
+## Load Testing
+
+O endpoint ActionCable (`PresenceChannel` + Solid Cable sobre Postgres) foi
+benchmarked com [K6](https://k6.io/) simulando até 100 conexões WebSocket
+simultâneas com heartbeat a cada 30 s.
+
+Veja [`load_test/README.md`](load_test/README.md) para instruções de execução
+e a tabela de resultados.
+
+```bash
+# execução rápida (servidor local rodando)
+k6 run load_test/websocket_test.js
+
+# contra produção
+k6 run -e BASE_URL=wss://your-app.fly.dev load_test/websocket_test.js
+```
+
+---
+
 ## O que eu implementaria a seguir
 
 - **Rate limiting** na busca do YouTube por IP (hoje sem proteção)
