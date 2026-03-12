@@ -1,0 +1,5 @@
+normal_message:
+  room: active_room
+  user: guest_user
+  content: Hello everyone!
+  system: false

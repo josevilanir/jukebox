@@ -1,16 +1,22 @@
 <%# messages/_message.html.erb — dark chat bubble %>
 <% m = message %>
-<div id="<%= dom_id(m) %>" class="flex items-start gap-2">
-  <%# Avatar initial %>
-  <div class="w-7 h-7 rounded-full shrink-0 flex items-center justify-center text-xs font-bold text-white"
-       style="background: var(--accent);">
-    <%= m.user.name[0].upcase %>
+<% if m.system? %>
+  <div id="<%= dom_id(m) %>" class="text-center text-xs py-1 px-2 italic" style="color: var(--text-faint);">
+    <%= h(m.content) %>
   </div>
-  <div class="flex-1 min-w-0">
-    <div class="flex items-baseline gap-2">
-      <span class="text-xs font-bold"><%= m.user.name %></span>
-      <span class="text-[0.65rem]" style="color: var(--text-faint);"><%= l m.created_at, format: :short %></span>
+<% else %>
+  <div id="<%= dom_id(m) %>" class="flex items-start gap-2">
+    <%# Avatar initial %>
+    <div class="w-7 h-7 rounded-full shrink-0 flex items-center justify-center text-xs font-bold text-white"
+         style="background: var(--accent);">
+      <%= m.user.name[0].upcase %>
     </div>
-    <div class="text-sm" style="color: var(--text-muted);"><%= simple_format(h(m.content)) %></div>
+    <div class="flex-1 min-w-0">
+      <div class="flex items-baseline gap-2">
+        <span class="text-xs font-bold"><%= m.user.name %></span>
+        <span class="text-[0.65rem]" style="color: var(--text-faint);"><%= l m.created_at, format: :short %></span>
+      </div>
+      <div class="text-sm" style="color: var(--text-muted);"><%= simple_format(h(m.content)) %></div>
+    </div>
   </div>
-</div>
+<% end %>

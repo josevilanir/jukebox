@@ -41,5 +41,14 @@ class QueueItem < ApplicationRecord
       partial: "rooms/player",
       locals: { room: room }
     )
+
+    next_playing = room.now_playing
+    if next_playing
+      Message.broadcast_system_to(
+        room,
+        content: "🎵 Tocando agora: #{next_playing.track.title}",
+        system_type: "now_playing"
+      )
+    end
   end
 end
