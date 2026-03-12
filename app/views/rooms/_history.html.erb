@@ -1,20 +1,25 @@
-<%# rooms/_history.html.erb — recently played dark list %>
-<% recents = room.history(limit: 10) %>
-<% if recents.any? %>
-  <div class="card">
-    <h2 class="font-bold text-base mb-3" style="color: var(--text-muted);">Tocadas recentemente</h2>
-    <div class="space-y-2">
-      <% recents.each do |qi| %>
-        <div class="flex items-center gap-3 px-2 py-2 rounded-lg opacity-60 hover:opacity-80 transition-opacity">
-          <img src="<%= qi.track.thumbnail_url %>" alt="" class="thumb">
-          <div class="flex-1 min-w-0">
-            <div class="text-sm font-medium truncate"><%= qi.track.title %></div>
-            <div class="text-xs" style="color: var(--text-faint);">
-              Tocada <%= l qi.played_at, format: :short %> · por <%= qi.added_by.name %>
+<%# rooms/_history.html.erb — paginated recently played list (rendered inside turbo-frame) %>
+<turbo-frame id="history">
+  <% if history_items.any? %>
+    <div class="card">
+      <h2 class="font-bold text-base mb-3" style="color: var(--text-muted);">Tocadas recentemente</h2>
+      <div class="space-y-2">
+        <% history_items.each do |qi| %>
+          <div class="flex items-center gap-3 px-2 py-2 rounded-lg opacity-60 hover:opacity-80 transition-opacity">
+            <img src="<%= qi.track.thumbnail_url %>" alt="" class="thumb">
+            <div class="flex-1 min-w-0">
+              <div class="text-sm font-medium truncate"><%= qi.track.title %></div>
+              <div class="text-xs" style="color: var(--text-faint);">
+                Tocada <%= l qi.played_at, format: :short %> · por <%= qi.added_by.name %>
+              </div>
             </div>
           </div>
-        </div>
+        <% end %>
+      </div>
+      <% if pagy.next %>
+        <%= link_to "Carregar mais", history_room_path(room.slug, page: pagy.next),
+              class: "mt-3 block text-center text-sm btn btn-ghost btn-sm w-full" %>
       <% end %>
     </div>
-  </div>
-<% end %>
+  <% end %>
+</turbo-frame>

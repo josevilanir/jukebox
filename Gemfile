@@ -35,6 +35,7 @@ gem "bootsnap", require: false
 
 # Rate limiting middleware
 gem "rack-attack"
+gem "pagy"
 
 # Deploy this application anywhere as a Docker container [https://kamal-deploy.org]
 gem "kamal", require: false

@@ -31,10 +31,8 @@ class Room < ApplicationRecord
                .order("score DESC, queue_items.created_at ASC")
   end
 
-  def history(limit: 20)
-    queue_items.where.not(played_at: nil)
-               .order(played_at: :desc)
-               .limit(limit)
+  def history
+    queue_items.where.not(played_at: nil).order(played_at: :desc)
   end
 
   # ---- Permissões ----

@@ -1,5 +1,5 @@
 class RoomsController < ApplicationController
-  before_action :set_room, only: %i[show play_next toggle_dj_mode close seek]
+  before_action :set_room, only: %i[show history play_next toggle_dj_mode close seek]
   before_action :redirect_if_closed, only: %i[show]
 
   def index
@@ -23,6 +23,11 @@ class RoomsController < ApplicationController
   def show
     @queue_items = @room.queue_open
     @current_item = @room.now_playing
+  end
+
+  def history
+    @pagy, @history_items = pagy(:offset, @room.history, limit: 10)
+    render partial: "rooms/history", locals: { room: @room, pagy: @pagy, history_items: @history_items }
   end
 
   def play_next

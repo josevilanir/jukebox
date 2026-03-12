@@ -94,7 +94,7 @@
     <%# Queue + History — order-2 on mobile so chat appears first %>
     <div class="lg:col-span-2 space-y-5 order-2 lg:order-1">
       <div id="queue"><%= render "rooms/queue", room: @room %></div>
-      <%= render "rooms/history", room: @room %>
+      <turbo-frame id="history" src="<%= history_room_path(@room.slug) %>"></turbo-frame>
     </div>
 
     <%# Chat — order-1 on mobile %>
