@@ -1,5 +1,7 @@
 # Jukebox 🎧
 
+[![CI](https://github.com/josevilanir/jukebox/actions/workflows/ci.yml/badge.svg)](https://github.com/josevilanir/jukebox/actions/workflows/ci.yml)
+
 Sala de música colaborativa em tempo real. Crie uma sala, convide amigos e
 deixem a galera votar na próxima música — nada de DJ ditador.
 
