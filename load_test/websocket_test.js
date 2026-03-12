@@ -144,12 +144,6 @@ export default function () {
       }, 5000);
     }, 30000);
 
-    // ------------------------------------------------------------------
-    // Keep the connection alive for the test duration then close cleanly
-    // ------------------------------------------------------------------
-    socket.setTimeout(() => {
-      socket.close();
-    }, 60000);
   });
 
   check(res, { "WS connection status 101": (r) => r && r.status === 101 });
