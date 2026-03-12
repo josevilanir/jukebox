@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  include Pagy::Method
+
   before_action :ensure_current_user
   helper_method :current_user, :show_name_modal?
 

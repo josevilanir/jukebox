@@ -5,6 +5,7 @@ Rails.application.routes.draw do
 
   resources :rooms, param: :slug, only: %i[index new create show] do
     member do
+      get  :history
       post :play_next
       patch :toggle_dj_mode
       patch :close
