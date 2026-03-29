@@ -38,6 +38,8 @@
 
 # Transient files
 .claude/
+.ruby-lsp/
+CLAUDE.md
 out.txt
 test_output.txt
 test_output_*.txt
