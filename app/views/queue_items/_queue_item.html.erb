@@ -2,7 +2,7 @@
 <% qi = queue_item %>
 <% user = (defined?(current_user) && current_user.present?) ? current_user : nil %>
 <% user_voted  = user && user.votes.where(queue_item: qi).exists? %>
-<% is_playing  = (qi == qi.room.now_playing) %>
+<% is_playing  = (qi == local_assigns.fetch(:current_item) { qi.room.now_playing }) %>
 
 <div id="<%= dom_id(qi) %>"
      class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors duration-150

@@ -1,6 +1,7 @@
 class RoomsController < ApplicationController
   before_action :set_room, only: %i[show history play_next toggle_dj_mode close seek]
   before_action :redirect_if_closed, only: %i[show]
+  before_action :require_host!, only: %i[seek close toggle_dj_mode]
 
   def index
     @rooms = Room.where(status: "active").order(created_at: :desc)
@@ -46,8 +47,6 @@ class RoomsController < ApplicationController
   end
 
   def seek
-    return head :forbidden unless @room.host?(current_user)
-
     current = @room.now_playing
     return head :no_content unless current&.started_at
 
@@ -68,19 +67,11 @@ class RoomsController < ApplicationController
   end
 
   def close
-    unless @room.host?(current_user)
-      redirect_to room_path(@room.slug), alert: "Apenas o host pode fechar a sala." and return
-    end
-
     @room.update!(status: "closed")
     redirect_to rooms_path, notice: "Sala '#{@room.name}' fechada."
   end
 
   def toggle_dj_mode
-    unless @room.host?(current_user)
-      redirect_to room_path(@room.slug), alert: "Apenas o host pode alterar o Modo DJ." and return
-    end
-
     @room.update!(dj_mode: !@room.dj_mode?)
     status = @room.dj_mode? ? "ativado" : "desativado"
     redirect_to room_path(@room.slug), notice: "Modo DJ #{status}."
@@ -96,6 +87,12 @@ class RoomsController < ApplicationController
     return unless @room.closed? && !@room.host?(current_user)
 
     redirect_to rooms_path, alert: "Essa sala foi encerrada pelo host."
+  end
+
+  def require_host!
+    return if @room.host?(current_user)
+
+    redirect_to room_path(@room.slug), alert: "Apenas o host pode fazer isso."
   end
 
   def room_params

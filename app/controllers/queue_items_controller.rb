@@ -26,7 +26,7 @@ class QueueItemsController < ApplicationController
           end
         end
       end
-    rescue => e
+    rescue ArgumentError, ActiveRecord::RecordInvalid => e
       redirect_to room_path(@room.slug), alert: e.message and return
     end
 

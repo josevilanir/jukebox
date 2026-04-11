@@ -55,7 +55,8 @@ class Track < ApplicationRecord
     else
       {}
     end
-  rescue => _e
+  rescue Net::HTTPError, SocketError, Errno::ECONNREFUSED, Timeout::Error => e
+    Rails.logger.warn "[Track] oEmbed fetch failed for #{vid}: #{e.class}: #{e.message}"
     {}
   end
 

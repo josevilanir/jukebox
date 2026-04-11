@@ -20,11 +20,14 @@ class QueueItem < ApplicationRecord
   end
 
   def broadcast_updates
+    queue_items  = room.queue_open.to_a
+    current_item = room.now_playing
+
     broadcast_update_to(
       room,
       target: "queue",
       partial: "rooms/queue",
-      locals: { room: room }
+      locals: { room: room, queue_items: queue_items, current_item: current_item }
     )
 
     # Só atualiza o player quando a faixa em execução muda:
@@ -33,13 +36,13 @@ class QueueItem < ApplicationRecord
     # - é o primeiro item da fila (sala estava vazia)
     return unless saved_change_to_played_at? ||
                   destroyed? ||
-                  (previously_new_record? && room.queue_open.length == 1)
+                  (previously_new_record? && queue_items.length == 1)
 
     broadcast_replace_to(
       room,
       target: "player",
       partial: "rooms/player",
-      locals: { room: room }
+      locals: { room: room, queue_items: queue_items, current_item: current_item }
     )
 
     next_playing = room.now_playing

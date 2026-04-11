@@ -6,7 +6,7 @@
   <div id="messages"
        class="flex-1 overflow-y-auto space-y-3 pr-1 scroll-area"
        data-controller="chat-scroll">
-    <% room.messages.order(created_at: :asc).each do |m| %>
+    <% room.messages.order(created_at: :asc).last(50).each do |m| %>
       <%= render "messages/message", message: m %>
     <% end %>
   </div>

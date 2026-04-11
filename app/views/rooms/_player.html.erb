@@ -1,5 +1,6 @@
 <%# rooms/_player.html.erb — glassmorphism Now Playing hero %>
-<% current = room.now_playing %>
+<% queue_items = local_assigns.fetch(:queue_items) { room.queue_open } %>
+<% current = local_assigns.fetch(:current_item) { room.now_playing } %>
 
 <div id="player" class="card-elevated overflow-hidden">
   <% if current&.track&.youtube_id %>
@@ -58,7 +59,7 @@
         <% end %>
 
         <%# Botão Próxima — visível quando pode avançar %>
-        <% if room.queue_open.length > 1 && room.can_advance?(current_user) %>
+        <% if queue_items.length > 1 && room.can_advance?(current_user) %>
           <%= button_to "▶ Próxima", play_next_room_path(room.slug),
                 method: :post,
                 class: "btn btn-success btn-sm" %>
@@ -71,7 +72,7 @@
       <div class="text-6xl mb-4 opacity-30">🎵</div>
       <p class="font-semibold text-lg mb-1">A pista está vazia!</p>
       <p class="text-sm" style="color: var(--text-muted);">Adicione a primeira música abaixo ↓</p>
-      <% if room.queue_open.any? && room.can_advance?(current_user) %>
+      <% if queue_items.any? && room.can_advance?(current_user) %>
         <%= button_to "⏭ Iniciar", play_next_room_path(room.slug),
               method: :post,
               class: "btn btn-success mt-6" %>

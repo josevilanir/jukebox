@@ -5,5 +5,8 @@ class CleanupRoomsJob < ApplicationJob
     cutoff = 30.days.ago
     deleted_count = QueueItem.where("played_at < ?", cutoff).delete_all
     Rails.logger.info "[CleanupRoomsJob] Deleted #{deleted_count} played QueueItems older than 30 days"
+  rescue => e
+    Rails.logger.error "[CleanupRoomsJob] Failed: #{e.class}: #{e.message}"
+    raise
   end
 end

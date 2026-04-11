@@ -70,7 +70,7 @@ class YoutubeSearchService
 
       results
     rescue JSON::ParserError, StandardError => e
-      Rails.logger.error "[YoutubeSearchService] Error parsing youtube: #{e.message}"
+      Rails.logger.error "[YoutubeSearchService] scrape failed: query=#{query.inspect} error=#{e.class} message=#{e.message}"
       []
     end
   end

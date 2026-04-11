@@ -46,3 +46,9 @@ test_output_*.txt
 load_test/node_modules/
 load_test/package.json
 load_test/package-lock.json
+
+# Local documentation and agent logs
+CLAUDE.md
+tasks/todo.md
+tasks/lessons.md
+

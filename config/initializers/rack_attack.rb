@@ -22,6 +22,21 @@ Rack::Attack.throttle("rooms/create/ip", limit: 5, period: 300) do |req|
   req.client_ip if req.path == "/rooms" && req.post?
 end
 
+# Limit votes (upvotes): 30 per minute per IP
+Rack::Attack.throttle("votes/ip", limit: 30, period: 60) do |req|
+  req.client_ip if req.path.end_with?("/votes") && req.post?
+end
+
+# Limit skip votes: 10 per minute per IP
+Rack::Attack.throttle("skip_votes/ip", limit: 10, period: 60) do |req|
+  req.client_ip if req.path.end_with?("/skip_votes") && req.post?
+end
+
+# Limit chat messages: 20 per minute per IP
+Rack::Attack.throttle("messages/ip", limit: 20, period: 60) do |req|
+  req.client_ip if req.path.end_with?("/messages") && req.post?
+end
+
 # Return 429 with a plain message (Turbo handles non-2xx gracefully)
 Rack::Attack.throttled_responder = lambda do |req|
   match_data = req.env["rack.attack.match_data"]

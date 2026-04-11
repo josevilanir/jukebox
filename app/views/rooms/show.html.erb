@@ -56,7 +56,7 @@
         1 pessoa ouvindo
       </span>
 
-      <span class="badge badge-live"><%= @room.queue_open.length %> na fila</span>
+      <span class="badge badge-live"><%= @queue_items.length %> na fila</span>
 
       <%# Toggle DJ Mode / Close Room — apenas host %>
       <% if @room.host?(current_user) %>
@@ -83,7 +83,7 @@
   </div>
 
   <%# ─ Player hero ──────────────────────────────────────────────── %>
-  <%= render "rooms/player", room: @room %>
+  <%= render "rooms/player", room: @room, queue_items: @queue_items, current_item: @current_item %>
 
   <%# ─ Add track ────────────────────────────────────────────────── %>
   <%= render "queue_items/form", room: @room %>
@@ -93,7 +93,7 @@
 
     <%# Queue + History — order-2 on mobile so chat appears first %>
     <div class="lg:col-span-2 space-y-5 order-2 lg:order-1">
-      <div id="queue"><%= render "rooms/queue", room: @room %></div>
+      <div id="queue"><%= render "rooms/queue", room: @room, queue_items: @queue_items, current_item: @current_item %></div>
       <turbo-frame id="history" src="<%= history_room_path(@room.slug) %>"></turbo-frame>
     </div>
 

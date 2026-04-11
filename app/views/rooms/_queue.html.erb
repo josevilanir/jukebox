@@ -1,14 +1,16 @@
 <%# rooms/_queue.html.erb — scrollable dark-mode queue %>
+<% queue_items = local_assigns.fetch(:queue_items) { room.queue_open } %>
+<% current_item = local_assigns.fetch(:current_item) { room.now_playing } %>
 <div class="card">
   <div class="flex items-center justify-between mb-4">
     <h2 class="font-bold text-base">Fila</h2>
-    <span class="badge badge-score"><%= room.queue_open.length %> músicas</span>
+    <span class="badge badge-score"><%= queue_items.length %> músicas</span>
   </div>
 
   <div id="queue_items" class="space-y-2 scroll-area max-h-80">
-    <% if room.queue_open.any? %>
-      <% room.queue_open.each do |qi| %>
-        <%= render "queue_items/queue_item", queue_item: qi %>
+    <% if queue_items.any? %>
+      <% queue_items.each do |qi| %>
+        <%= render "queue_items/queue_item", queue_item: qi, current_item: current_item %>
       <% end %>
     <% else %>
       <div class="text-center py-10">
