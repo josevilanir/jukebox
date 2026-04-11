@@ -1,47 +1,105 @@
-<%# ─── Rooms index / Splash ─────────────────────────────────────── %>
-<div class="py-10 animate-fade-up">
+<%# ─── Retrowave landing – ativa a classe no body ────────────────── %>
+<%= content_for :body_class, "retrowave-page" %>
 
-  <%# Hero -%>
-  <div class="text-center mb-12">
-    <div class="inline-flex items-center gap-2 badge badge-live mb-4">
-      <span class="live-dot"></span> Ouvindo juntos em tempo real
+<%# ─── Background retrowave (fixed, atrás de tudo) ──────────────── %>
+<div class="retrowave-bg" aria-hidden="true">
+  <div class="retrowave-grid-ceiling"></div>
+  <div class="retrowave-grid-floor"></div>
+  <div class="retrowave-halftone-left"></div>
+  <div class="retrowave-halftone-right"></div>
+</div>
+
+<%# ─── Conteúdo principal ────────────────────────────────────────── %>
+<div class="relative z-10 py-12 animate-fade-up">
+
+  <%# ── Hero ──────────────────────────────────────────────────────── %>
+  <div class="text-center mb-16">
+
+    <%# Logo neon -%>
+    <div class="mb-8">
+      <div class="retrowave-logo-frame inline-block">
+        <span class="retrowave-logo-text">Jukebox</span>
+      </div>
     </div>
-    <h1 class="text-5xl font-extrabold tracking-tight leading-tight mb-4">
-      Sua
-      <span class="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">pista de dança</span>
-      colaborativa
+
+    <%# Badge "ao vivo" -%>
+    <div class="mb-7">
+      <span class="retrowave-badge-live">
+        <span class="retrowave-live-dot"></span>
+        OUVINDO JUNTOS EM TEMPO REAL
+      </span>
+    </div>
+
+    <%# Título principal -%>
+    <h1 class="retrowave-title text-5xl sm:text-6xl font-extrabold tracking-tight leading-tight mb-5">
+      Sua pista de dança<br>colaborativa
     </h1>
-    <p class="text-lg max-w-xl mx-auto" style="color: var(--text-muted);">
-      Crie uma sala, convide os amigos e deixem a galera votar na próxima música. Nada de DJ ditador.
+
+    <%# Subtítulo -%>
+    <p class="text-lg max-w-xl mx-auto text-white/75 mb-9">
+      Crie uma sala, convide os amigos e deixem a galera votar na próxima música.
+      Nada de DJ ditador.
     </p>
-    <div class="mt-8 flex items-center justify-center gap-4 flex-wrap">
-      <%= link_to "Criar nova sala", new_room_path, class: "btn btn-primary px-8 py-3 text-base" %>
-    </div>
+
+    <%# CTA -%>
+    <%= link_to "Criar nova sala", new_room_path, class: "btn-neon text-base" %>
   </div>
 
-  <%# Salas abertas -%>
+  <%# ── Salas abertas / Empty State ───────────────────────────────── %>
   <% if @rooms.any? %>
-    <h2 class="text-xl font-bold mb-4" style="color: var(--text-muted);">Salas abertas</h2>
+    <h2 class="text-xs font-bold mb-5 text-white/50 uppercase tracking-widest text-center">
+      Salas abertas
+    </h2>
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
       <% @rooms.each do |room| %>
-        <%= link_to room_path(room.slug), class: "card group flex flex-col gap-3 hover:border-purple-500/50 transition-all duration-200 hover:-translate-y-0.5" do %>
+        <%= link_to room_path(room.slug), class: "retrowave-room-card group" do %>
           <div class="flex items-center justify-between">
-            <span class="font-bold text-base truncate"><%= room.name %></span>
+            <span class="font-bold text-base truncate text-white"><%= room.name %></span>
             <span class="badge badge-live"><span class="live-dot mr-1.5"></span>Ao vivo</span>
           </div>
-          <div class="text-sm" style="color: var(--text-muted);">
+          <div class="text-sm text-white/50 mt-2">
             <%= pluralize(room.queue_open.length, "música", "músicas") %> na fila
           </div>
         <% end %>
       <% end %>
     </div>
+
   <% else %>
     <%# Empty state -%>
-    <div class="card text-center py-16 max-w-md mx-auto">
-      <div class="text-5xl mb-4">🎧</div>
-      <h3 class="text-lg font-semibold mb-2">Nenhuma sala aberta</h3>
-      <p class="text-sm mb-6" style="color: var(--text-muted);">Seja o primeiro DJ da noite!</p>
-      <%= link_to "Criar uma sala", new_room_path, class: "btn btn-primary" %>
+    <div class="retrowave-empty-card max-w-lg mx-auto text-center">
+
+      <%# Ícone headphones SVG -%>
+      <div class="retrowave-icon-container mb-5">
+        <svg class="retrowave-headphones-icon" viewBox="0 0 80 80" fill="none"
+             xmlns="http://www.w3.org/2000/svg" aria-label="Fone de ouvido">
+          <circle cx="40" cy="40" r="37" stroke="url(#rw-ring)"
+                  stroke-width="1" stroke-dasharray="5 3" opacity="0.6"/>
+          <path d="M18 46C18 31.64 28.75 20 42 20C55.25 20 66 31.64 66 46"
+                stroke="#00e5ff" stroke-width="2.5" stroke-linecap="round"/>
+          <rect x="10" y="44" width="11" height="18" rx="5.5"
+                fill="rgba(255,45,120,0.12)" stroke="#ff2d78" stroke-width="2"/>
+          <rect x="59" y="44" width="11" height="18" rx="5.5"
+                fill="rgba(0,229,255,0.12)" stroke="#00e5ff" stroke-width="2"/>
+          <line x1="21" y1="62" x2="21" y2="67" stroke="#ff2d78" stroke-width="2" stroke-linecap="round"/>
+          <line x1="59" y1="62" x2="59" y2="67" stroke="#00e5ff" stroke-width="2" stroke-linecap="round"/>
+          <path d="M21 67 Q40 73 59 67" stroke="url(#rw-chord)"
+                stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.5"/>
+          <defs>
+            <linearGradient id="rw-ring" x1="2" y1="2" x2="78" y2="78" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#ff2d78"/>
+              <stop offset="1" stop-color="#00e5ff"/>
+            </linearGradient>
+            <linearGradient id="rw-chord" x1="21" y1="67" x2="59" y2="67" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#ff2d78"/>
+              <stop offset="1" stop-color="#00e5ff"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+
+      <h3 class="retrowave-empty-title mb-2">Nenhuma sala aberta</h3>
+      <p class="text-sm text-white/50 mb-7">Seja o primeiro DJ da noite!</p>
+      <%= link_to "Criar uma sala", new_room_path, class: "btn-neon" %>
     </div>
   <% end %>
 

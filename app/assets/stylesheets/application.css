@@ -3,7 +3,7 @@
  * Dark-mode, Spotify-inspired palette.
  */
 
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Pacifico&display=swap");
 
 /* ─── Design Tokens ──────────────────────────────────────────── */
 :root {
@@ -291,3 +291,305 @@ body {
 /* Host-only controls: hidden by default, shown when the page marks the viewer as host */
 .host-only { display: none; }
 [data-room-host] .host-only { display: inline-flex; }
+
+/* ─── Retrowave / Synthwave Landing ──────────────────────────── */
+
+/* Full-screen fixed background */
+.retrowave-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    to bottom,
+    #1a0533 0%,
+    #0d1a4a 50%,
+    #060d24 100%
+  );
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Perspective grid – floor */
+.retrowave-grid-floor {
+  position: absolute;
+  bottom: -15%;
+  left: 50%;
+  transform: translateX(-50%) perspective(350px) rotateX(72deg);
+  transform-origin: 50% 100%;
+  width: 280%;
+  height: 55%;
+  background-image:
+    linear-gradient(rgba(0, 229, 255, 0.28) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 229, 255, 0.28) 1px, transparent 1px);
+  background-size: 80px 80px;
+}
+
+/* Perspective grid – ceiling */
+.retrowave-grid-ceiling {
+  position: absolute;
+  top: -8%;
+  left: 50%;
+  transform: translateX(-50%) perspective(350px) rotateX(-72deg);
+  transform-origin: 50% 0%;
+  width: 280%;
+  height: 28%;
+  background-image:
+    linear-gradient(rgba(255, 45, 120, 0.22) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 45, 120, 0.22) 1px, transparent 1px);
+  background-size: 80px 80px;
+}
+
+/* Halftone left (pink) */
+.retrowave-halftone-left {
+  position: absolute;
+  left: 0;
+  top: 8%;
+  width: 14%;
+  height: 65%;
+  background-image: radial-gradient(circle, rgba(255, 45, 120, 0.45) 1.5px, transparent 1.5px);
+  background-size: 18px 18px;
+  mask-image: linear-gradient(to right, rgba(0,0,0,0.8), transparent);
+  -webkit-mask-image: linear-gradient(to right, rgba(0,0,0,0.8), transparent);
+}
+
+/* Halftone right (cyan) */
+.retrowave-halftone-right {
+  position: absolute;
+  right: 0;
+  top: 8%;
+  width: 14%;
+  height: 65%;
+  background-image: radial-gradient(circle, rgba(0, 229, 255, 0.45) 1.5px, transparent 1.5px);
+  background-size: 18px 18px;
+  mask-image: linear-gradient(to left, rgba(0,0,0,0.8), transparent);
+  -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,0.8), transparent);
+}
+
+/* Neon logo wrapper */
+.retrowave-logo-frame {
+  position: relative;
+  display: inline-block;
+  transform: rotate(-2deg);
+  padding: 0.5rem 2.25rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Outer pink frame */
+.retrowave-logo-frame::after {
+  content: '';
+  position: absolute;
+  inset: -14px;
+  border: 2px solid rgba(255, 45, 120, 0.55);
+  border-radius: 12px;
+  box-shadow:
+    0 0 14px rgba(255, 45, 120, 0.55),
+    0 0 40px rgba(255, 45, 120, 0.25),
+    inset 0 0 20px rgba(255, 45, 120, 0.05);
+}
+
+/* Inner cyan frame */
+.retrowave-logo-frame::before {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border: 2px solid rgba(0, 229, 255, 0.75);
+  border-radius: 7px;
+  box-shadow:
+    0 0 8px rgba(0, 229, 255, 0.65),
+    0 0 28px rgba(0, 229, 255, 0.3),
+    inset 0 0 14px rgba(0, 229, 255, 0.08);
+}
+
+.retrowave-logo-text {
+  font-family: 'Pacifico', cursive;
+  font-size: clamp(3rem, 8vw, 5.5rem);
+  color: #fff;
+  text-shadow:
+    0 0 6px rgba(255, 255, 255, 0.95),
+    0 0 18px rgba(255, 45, 120, 0.95),
+    0 0 45px rgba(255, 45, 120, 0.7),
+    0 0 90px rgba(255, 45, 120, 0.35);
+  line-height: 1.1;
+  display: block;
+}
+
+/* Live status badge */
+.retrowave-badge-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: #00e07a;
+  background: rgba(0, 224, 122, 0.06);
+  border: 1px solid rgba(0, 224, 122, 0.35);
+  border-radius: 999px;
+  padding: 0.35rem 1rem;
+  box-shadow:
+    0 0 10px rgba(0, 224, 122, 0.2),
+    0 0 25px rgba(0, 224, 122, 0.1);
+}
+
+.retrowave-live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #00e07a;
+  box-shadow: 0 0 6px #00e07a, 0 0 16px rgba(0, 224, 122, 0.8);
+  animation: rw-pulse 1.8s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes rw-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.6; transform: scale(1.2); }
+}
+
+/* Hero main title */
+.retrowave-title {
+  font-family: 'Pacifico', cursive;
+  color: #fff;
+  text-shadow:
+    0 0 10px rgba(255, 45, 120, 0.95),
+    0 0 30px rgba(255, 45, 120, 0.6),
+    0 0 65px rgba(255, 45, 120, 0.3);
+}
+
+/* Metallic neon pill button */
+.btn-neon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 0.75rem 2.25rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  text-decoration: none;
+  background: linear-gradient(135deg, #ff2d78 0%, #c0006a 100%);
+  color: #fff;
+  position: relative;
+  letter-spacing: 0.04em;
+  box-shadow:
+    0 0 15px rgba(255, 45, 120, 0.75),
+    0 0 40px rgba(255, 45, 120, 0.4),
+    0 0 70px rgba(255, 45, 120, 0.2),
+    inset 0 1px 0 rgba(255, 180, 210, 0.55),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.45);
+}
+
+.btn-neon::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 999px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.3) 0%,
+    rgba(200, 0, 100, 0.6) 50%,
+    rgba(255, 255, 255, 0.15) 100%
+  );
+  z-index: -1;
+}
+
+.btn-neon:hover {
+  transform: translateY(-2px);
+  color: #fff;
+  box-shadow:
+    0 0 25px rgba(255, 45, 120, 0.95),
+    0 0 55px rgba(255, 45, 120, 0.65),
+    0 0 90px rgba(255, 45, 120, 0.3),
+    inset 0 1px 0 rgba(255, 180, 210, 0.55),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.45);
+}
+
+/* Room card (retrowave style) */
+.retrowave-room-card {
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  background: rgba(10, 10, 28, 0.75);
+  border: 1px solid rgba(0, 229, 255, 0.2);
+  box-shadow:
+    0 0 10px rgba(0, 229, 255, 0.1),
+    inset 0 0 20px rgba(0, 229, 255, 0.03);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.retrowave-room-card:hover {
+  border-color: rgba(0, 229, 255, 0.55);
+  box-shadow:
+    0 0 20px rgba(0, 229, 255, 0.3),
+    0 0 45px rgba(0, 229, 255, 0.15),
+    inset 0 0 20px rgba(0, 229, 255, 0.05);
+  transform: translateY(-2px);
+}
+
+/* Empty state card */
+.retrowave-empty-card {
+  position: relative;
+  padding: 3.5rem 2.5rem;
+  border-radius: 1rem;
+  background: rgba(5, 6, 26, 0.88);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(200, 200, 230, 0.12);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.04),
+    0 0 35px rgba(255, 45, 120, 0.28),
+    0 0 80px rgba(255, 45, 120, 0.12),
+    0 0 130px rgba(255, 45, 120, 0.06);
+}
+
+.retrowave-empty-card::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: calc(1rem + 1px);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 45, 120, 0.35) 0%,
+    transparent 35%,
+    transparent 65%,
+    rgba(0, 229, 255, 0.25) 100%
+  );
+  z-index: -1;
+}
+
+/* Headphones icon */
+.retrowave-icon-container {
+  width: 96px;
+  height: 96px;
+  margin: 0 auto;
+}
+
+.retrowave-headphones-icon {
+  width: 100%;
+  height: 100%;
+  filter:
+    drop-shadow(0 0 8px rgba(0, 229, 255, 0.7))
+    drop-shadow(0 0 22px rgba(255, 45, 120, 0.45));
+}
+
+/* Empty state title (neon script) */
+.retrowave-empty-title {
+  font-family: 'Pacifico', cursive;
+  font-size: 1.8rem;
+  color: #fff;
+  text-shadow:
+    0 0 8px rgba(255, 255, 255, 0.7),
+    0 0 22px rgba(255, 45, 120, 0.45);
+}
+
+/* Body override for retrowave page */
+body.retrowave-page {
+  background: transparent !important;
+}
