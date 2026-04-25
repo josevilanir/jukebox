@@ -6,6 +6,7 @@ default: &default
   port: 5432
   username: <%= ENV.fetch("PGUSER", "rails") %>
   password: <%= ENV.fetch("PGPASSWORD", "rails123") %>
+  sslmode: disable
 
 development:
   <<: *default

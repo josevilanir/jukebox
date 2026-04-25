@@ -3,6 +3,7 @@ class Room < ApplicationRecord
 
   has_many :queue_items, dependent: :destroy
   has_many :messages, dependent: :destroy
+  has_many :memberships, class_name: "RoomMembership", dependent: :destroy
 
   validates :name, presence: true
   validates :slug, presence: true, uniqueness: true

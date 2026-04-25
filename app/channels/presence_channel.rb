@@ -38,7 +38,7 @@ class PresenceChannel < ActionCable::Channel::Base
     set = Rails.cache.read(set_key) || {}
 
     if online
-      set[current_user.id.to_s] = { name: current_user.name, at: Time.current.to_i }
+      set[current_user.id.to_s] = { name: current_user.name_in(@room), at: Time.current.to_i }
     else
       set.delete(current_user.id.to_s)
     end

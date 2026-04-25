@@ -66,7 +66,7 @@ class MessagesController < ApplicationController
       vote.save!
       Message.broadcast_system_to(
         @room,
-        content: "⏭ #{current_user.name} votou para pular.",
+        content: "⏭ #{current_user.name_in(@room)} votou para pular.",
         system_type: "skip_vote"
       )
     else

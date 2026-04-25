@@ -10,7 +10,7 @@
             <div class="flex-1 min-w-0">
               <div class="text-sm font-medium truncate"><%= qi.track.title %></div>
               <div class="text-xs" style="color: var(--text-faint);">
-                Tocada <%= l qi.played_at, format: :short %> · por <%= qi.added_by.name %>
+                Tocada <%= l qi.played_at, format: :short %> · por <%= qi.added_by.name_in(room) %>
               </div>
             </div>
           </div>

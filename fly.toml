@@ -1,6 +1,9 @@
 app = "jukebox-app"
 primary_region = "gru"
 
+[deploy]
+  release_command = "bin/rails db:migrate"
+
 [build]
 
 [env]

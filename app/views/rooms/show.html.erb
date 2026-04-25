@@ -1,12 +1,35 @@
 <%# rooms/show.html.erb ─ premium dark-mode room view %>
 <%= turbo_stream_from @room %>
 
+<% unless @membership %>
+  <div id="room-name-modal"
+       class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
+    <div class="card max-w-sm w-full mx-4 animate-fade-up">
+      <h2 class="text-xl font-extrabold mb-1">Como quer aparecer nessa sala?</h2>
+      <p class="text-sm mb-5" style="color: var(--text-muted);">
+        Escolha um apelido para <span class="font-semibold"><%= @room.name %></span>.
+      </p>
+      <%= form_with url: room_room_memberships_path(@room.slug), method: :post do |f| %>
+        <div class="space-y-3">
+          <%= f.text_field :name,
+                placeholder: "ex: DJ Marquinho",
+                class: "input",
+                autofocus: true,
+                maxlength: 30,
+                required: true %>
+          <%= f.submit "Entrar na sala", class: "btn btn-primary w-full py-3" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
 <% content_for :title, "#{@room.name} · Jukebox" %>
 
 <% content_for :nav_actions do %>
   <div class="flex items-center gap-3">
     <div class="hidden sm:flex items-center gap-2 text-sm" style="color: var(--text-muted);">
-      <span class="font-semibold" style="color: var(--text-primary);"><%= current_user.name %></span>
+      <span class="font-semibold" style="color: var(--text-primary);"><%= current_user.name_in(@room) %></span>
       <% if @room.host?(current_user) %>
         <span class="badge badge-host">Host</span>
       <% end %>

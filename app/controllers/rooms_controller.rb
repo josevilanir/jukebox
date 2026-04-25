@@ -22,6 +22,7 @@ class RoomsController < ApplicationController
   end
 
   def show
+    @membership = current_user.room_memberships.find_by(room: @room)
     @queue_items = @room.queue_open
     @current_item = @room.now_playing
   end

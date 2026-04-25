@@ -39,7 +39,6 @@
 # Transient files
 .claude/
 .ruby-lsp/
-CLAUDE.md
 out.txt
 test_output.txt
 test_output_*.txt
@@ -50,7 +49,7 @@ load_test/package.json
 load_test/package-lock.json
 
 # Local documentation and agent logs
-CLAUDE.md
+claude.md
 tasks/todo.md
 tasks/lessons.md
 

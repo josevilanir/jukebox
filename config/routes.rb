@@ -1,8 +1,6 @@
 Rails.application.routes.draw do
   get "home/index"
 
-  resource :user, only: [ :update ]
-
   resources :rooms, param: :slug, only: %i[index new create show] do
     member do
       get  :history
@@ -20,6 +18,7 @@ Rails.application.routes.draw do
     end
 
     resources :messages, only: %i[create]
+    resources :room_memberships, only: %i[create]
   end
 
   root "rooms#index"
