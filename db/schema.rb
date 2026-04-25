@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_03_12_125711) do
+ActiveRecord::Schema[8.0].define(version: 2026_04_25_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -51,6 +51,17 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_12_125711) do
     t.boolean "dj_mode", default: false, null: false
     t.index ["owner_id"], name: "index_rooms_on_owner_id"
     t.index ["slug"], name: "index_rooms_on_slug", unique: true
+  end
+
+  create_table "room_memberships", force: :cascade do |t|
+    t.bigint "room_id", null: false
+    t.bigint "user_id", null: false
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["room_id", "user_id"], name: "index_room_memberships_on_room_id_and_user_id", unique: true
+    t.index ["room_id"], name: "index_room_memberships_on_room_id"
+    t.index ["user_id"], name: "index_room_memberships_on_user_id"
   end
 
   create_table "skip_votes", force: :cascade do |t|
@@ -240,6 +251,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_12_125711) do
   add_foreign_key "queue_items", "rooms"
   add_foreign_key "queue_items", "tracks"
   add_foreign_key "queue_items", "users", column: "added_by_id"
+  add_foreign_key "room_memberships", "rooms"
+  add_foreign_key "room_memberships", "users"
   add_foreign_key "rooms", "users", column: "owner_id"
   add_foreign_key "skip_votes", "queue_items"
   add_foreign_key "skip_votes", "users"
