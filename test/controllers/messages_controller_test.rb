@@ -3,8 +3,8 @@ require "test_helper"
 class MessagesControllerTest < ActionDispatch::IntegrationTest
   setup do
     @room = rooms(:active_room)
-    # Trigger ensure_current_user by hitting a redirect-only action (no template rendered)
-    patch user_path, params: { name: "Tester" }
+    # Trigger ensure_current_user so a session user is created
+    get rooms_path
     @current_user = User.find(session[:user_id])
     # Clear any fixture skip votes to isolate tests
     SkipVote.delete_all

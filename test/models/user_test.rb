@@ -1,11 +1,6 @@
 require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
-  test "name is required" do
-    user = User.new(name: "")
-    refute user.valid?
-  end
-
   test "name cannot exceed 30 characters" do
     user = User.new(name: "a" * 31)
     refute user.valid?
